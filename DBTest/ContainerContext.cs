@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Configuration;
 
 namespace DBTest
 {
@@ -15,11 +16,9 @@ namespace DBTest
         public DbSet<Port> Ports { get; set; }
         public DbSet<Containe> Containers { get; set; }
 
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=ContainerService;Username=postgres;Password=admin.123");
+            optionsBuilder.UseNpgsql(ConfigurationManager.AppSettings["ConnectStringDB"]);
         }
-
     }
 }

@@ -1,16 +1,12 @@
-﻿// See https://aka.ms/new-console-template for more information
-using DBTest;
+﻿using DBTest;
 
 Console.WriteLine("Hello, World!");
-
-
 using (var db = new ContainerContext())
 {
     var port1 = new Port("Saint-Peterburg");
     var port2 = new Port("Vladivostok");
     var port3 = new Port("Tokio");
     db.Ports.AddRange(port1, port2, port3);
-
 
     var container1 = new Containe(TypeContainer.STANDART, 10000);
     var container2 = new Containe(TypeContainer.OPEN, 10000);
@@ -19,11 +15,9 @@ using (var db = new ContainerContext())
     var container5 = new Containe(TypeContainer.TERMOS, 10000);
     db.Containers.AddRange(container1, container2, container3, container4, container5);
 
-
     var client1 = new Client("mail.ru", "art", "pass");
     var client2 = new Client("google.com", "tom", "qwerty");
     db.Clients.AddRange(client1, client2);
-
 
     var containers1 = new List<Containe>
     {
@@ -36,7 +30,6 @@ using (var db = new ContainerContext())
         Port2 = port2,
         Containers = containers1
     };
-
 
     var containers2 = new List<Containe>
            {
@@ -68,7 +61,6 @@ using (var db = new ContainerContext())
     };
 
     db.Orders.AddRange(order1, order2, order3);
-
 
     db.SaveChanges();
 }
