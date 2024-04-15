@@ -1,21 +1,28 @@
-﻿namespace DBTest
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace DBTest
 {
     internal class Client
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
+        [Column("first_name")]
         public string? FirstName { get; set; }
+        [Column("last_name")]
         public string? LastName { get; set; }
+        [Column("telephone")]
         public string? Telephone { get; set; }
-        public string Email { get; set; }
-        public string Login { get; set; }
-        public string Password { get; set; }
-        public List<Order>? Orders { get; set; }
+        [Column("email")]
+        public string? Email { get; set; }
+        [Column("login")]
+        public string? Login { get; set; }
+        [Column("password")]
+        public string? Password { get; set; }
 
-        public Client(string email, string login, string password)
+        public ICollection<Order> Orders { get; set; }
+
+        public Client()
         {
-            Email = email;
-            Login = login;
-            Password = password;
+            Orders = new List<Order>();
         }
     }
 }

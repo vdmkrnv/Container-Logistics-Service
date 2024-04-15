@@ -1,16 +1,20 @@
-﻿namespace DBTest
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace DBTest
 {
     internal class Containe
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
+        [Column("type")]
         public TypeContainer Type { get; set; }
+        [Column("cost")]
         public decimal Cost { get; set; }
-        public List<Order>? Orders { get; set; }
 
-        public Containe(TypeContainer type, decimal cost)
+        public ICollection<Order> Orders { get; set; }
+
+        public Containe()
         {
-            Type = type;
-            Cost = cost;
+            Orders = new List<Order>();
         }
     }
 

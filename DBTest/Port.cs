@@ -1,14 +1,22 @@
-﻿namespace DBTest
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace DBTest
 {
     internal class Port
     {
-        public long Id { get; set; }
-        public string Name { get; set; }
+        public int Id { get; set; }
+        [Column("name")]
+        public string? Name { get; set; }
+        [Column("cost")]
         public decimal Cost { get; set; }
 
-        public Port(string name)
+        public ICollection<Order> OrdersInPort1 { get; set; }
+        public ICollection<Order> OrdersInPort2 { get; set; }
+
+        public Port()
         {
-            Name = name;
+            OrdersInPort1 = new List<Order>();
+            OrdersInPort2 = new List<Order>();
         }
     }
 }
