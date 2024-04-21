@@ -1,0 +1,52 @@
+version: "3.5"
+
+services:
+    
+  users-db:
+    image: postgres
+    mem_limit: 1024MB
+    mem_reservation: 1G
+    environment:
+      POSTGRES_USER: ${DB_USR}
+      POSTGRES_PASSWORD: ${DB_PSW}
+    ports:
+    - "${DB_USERS_PORT}:5432"
+    networks:
+    - logic-network
+    volumes:
+    - ../data/db-users-data:/var/lib/postgresql/data
+    restart: always
+
+  orders-db:
+    image: postgres
+    mem_limit: 1536MB
+    mem_reservation: 1G
+    environment:
+      POSTGRES_USER: ${DB_USR}
+      POSTGRES_PASSWORD: ${DB_PSW}
+    ports:
+    - "${DB_ORDERS_PORT}:5432"
+    networks:
+    - logic-network
+    volumes:
+    - ../data/db-orders-data:/var/lib/postgresql/data
+    restart: always   
+
+  rabbit:
+    image: rabbitmq:3-management
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBIT_USR}
+      RABBITMQ_DEFAULT_PASS: ${RABBIT_PSW}
+    volumes:
+    - ../data/rabbitmq:/var/lib/rabbitmq
+    networks:
+    - logic-network
+    ports:
+    - "5672:5672"
+    - "15672:15672"
+    restart: always
+ 
+networks:
+  logic-network:
+    driver: bridge
+
