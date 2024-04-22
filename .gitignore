@@ -364,3 +364,6 @@ FodyWeavers.xsd
 
 #Private servers options
 /Servers
+
+#Rider IDE
+.idea/
