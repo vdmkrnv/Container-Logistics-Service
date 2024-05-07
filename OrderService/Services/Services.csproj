@@ -7,10 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Repositories.Abstractions\" />
       <Folder Include="Services.Abstractions\" />
-      <Folder Include="Services.Contracts\" />
-      <Folder Include="Services.Implementations\" />
+      <Folder Include="Services.Implementations\Mapping\" />
     </ItemGroup>
 
 </Project>
