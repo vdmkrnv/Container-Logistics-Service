@@ -7,6 +7,8 @@ public class OrderModel
 {
     public Guid Id { get; set; }
     
+    public Guid ClientId { get; set; }
+    
     public DateTime DateStart { get; set; }
     
     public DateTime DateEnd { get; set; }
@@ -22,4 +24,6 @@ public class OrderModel
     public ICollection<ContainerModel>? Containers { get; set; }
     
     public ICollection<DownTimeModel>? DownTimes { get; set; }
+    
+    public bool IsCanceled { get; set; }
 }

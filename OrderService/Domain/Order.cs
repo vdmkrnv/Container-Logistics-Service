@@ -5,6 +5,9 @@ namespace Domain;
 [Table("orders")]
 public class Order : BaseEntity
 {
+    [Column("client_id")]
+    public Guid ClientId { get; set; }
+    
     [Column("date_start")]
     public DateTime DateStart { get; set; }
     
@@ -27,8 +30,8 @@ public class Order : BaseEntity
     
     public ICollection<DownTime> DownTimes { get; set; }
     
-    [Column("is_deleted")]
-    public bool IsDeleted { get; set; }
+    [Column("is_canceled")]
+    public bool IsCanceled { get; set; }
 
     
     public Order()
