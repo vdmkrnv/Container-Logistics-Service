@@ -7,5 +7,8 @@ public class UpdatingContainerDto
 {
     public Guid Id { get; set; }
     
+    /// <summary>
+    /// Статус занятости контейнера
+    /// </summary>
     public bool IsEngaged { get; set; }
 }
