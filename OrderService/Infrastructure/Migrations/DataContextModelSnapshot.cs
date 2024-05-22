@@ -28,6 +28,10 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("ClientId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("client_id");
+
                     b.Property<double>("Costs")
                         .HasColumnType("double precision")
                         .HasColumnName("costs");
@@ -48,9 +52,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("hub_start_id");
 
-                    b.Property<bool>("IsDeleted")
+                    b.Property<bool>("IsCanceled")
                         .HasColumnType("boolean")
-                        .HasColumnName("is_deleted");
+                        .HasColumnName("is_canceled");
 
                     b.Property<double>("Price")
                         .HasColumnType("double precision")

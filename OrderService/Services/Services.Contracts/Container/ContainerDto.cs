@@ -13,5 +13,5 @@ public class ContainerDto
     /// <summary>
     /// ISO номер контейнера
     /// </summary>
-    public int IsoNumber { get; set; }
+    public string IsoNumber { get; set; }
 }

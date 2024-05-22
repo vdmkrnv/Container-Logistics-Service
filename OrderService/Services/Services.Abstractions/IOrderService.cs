@@ -11,8 +11,8 @@ public interface IOrderService
     /// <summary>
     /// Добавить заказ.
     /// </summary>
-    /// <param name="creatingOrderDto">DTO создаваемого заказа</param>
-    Task AddAsync(CreatingOrderDto creatingOrderDto);
+    /// <param name="Order"></param>
+    Task<bool> AddAsync(CreatingOrderDto creatingOrderDto);
 
     /// <summary>
     /// Получить заказ.
@@ -25,5 +25,5 @@ public interface IOrderService
     /// Отменить заказ.
     /// </summary>
     /// <param name="cancelingOrderDto">DTO отменяемого заказа</param>
-    Task CancelAsync(CancelingOrderDto cancelingOrderDto);
+    Task<bool> CancelAsync(CancelingOrderDto cancelingOrderDto);
 }

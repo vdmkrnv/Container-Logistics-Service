@@ -37,9 +37,9 @@ public class Order : BaseEntity
     public bool IsCanceled { get; set; }
 
     
-    public Order()
-    {
-        Containers = new List<Container>();
-        DownTimes = new List<DownTime>();
-    }
+    // public Order()
+    // {
+    //     Containers = new List<Container>();
+    //     DownTimes = new List<DownTime>();
+    // }
 }

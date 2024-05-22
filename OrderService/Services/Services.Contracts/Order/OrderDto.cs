@@ -22,7 +22,7 @@ public class OrderDto
     
     public double Price { get; set; }
     
-    public ICollection<ContainerDto>? Containers { get; set; }
+    public IEnumerable<ContainerDto>? Containers { get; set; }
     
-    public ICollection<DownTimeDto>? DownTimes { get; set; }
+    public IEnumerable<DownTimeDto>? DownTimes { get; set; }
 }

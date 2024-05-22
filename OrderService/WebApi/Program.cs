@@ -1,4 +1,10 @@
 using Infrastructure.EntityFramework;
+using Infrastructure.Repositories.Implementations;
+using Microsoft.EntityFrameworkCore;
+using Services.Repositories.Abstractions;
+using Services.Services.Abstractions;
+using Services.Services.Implementations;
+using Services.Services.Implementations.Mapping;
 
 namespace WebApi;
 
@@ -10,10 +16,22 @@ public class Program
         
         builder.Services.AddControllers();
 
+        // Конфигурация контекста EF Core
         DbContextService.ConfigureContext(builder.Services,
             builder.Configuration.GetConnectionString("DefaultConnectionString"));
+        builder.Services.AddScoped<DbContext, DataContext>();
         
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+        // Автомаппер
+        builder.Services.AddAutoMapper(typeof(OrderMappingProfile), typeof(ContainerMappingProfile));
+        
+        // Репозитории
+        builder.Services.AddScoped<IContainerRepository, ContainerRepository>();
+        builder.Services.AddScoped<IOrderService, OrderService>();
+        
+        // Сервисы
+        builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+        builder.Services.AddScoped<IContainerService, ContainerService>();
+        
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
