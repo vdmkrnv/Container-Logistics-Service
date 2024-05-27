@@ -5,7 +5,7 @@ namespace Services.Repositories.Abstractions;
 /// <summary>
 /// Интерфейс IRepository - описывает общие CRUD методы для репозиториев.
 /// </summary>
-/// <typeparam name="T"></typeparam>
+/// <typeparam name="T">Тип сущности</typeparam>
 public interface IRepository<T> where T : BaseEntity
 {
     /// <summary>

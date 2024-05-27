@@ -5,6 +5,10 @@ using Services.Services.Contracts.Container;
 
 namespace Services.Services.Implementations;
 
+
+/// <summary>
+/// Сервис контейнеров
+/// </summary>
 public class ContainerService : IContainerService
 {
     private readonly IContainerRepository _repository;
@@ -16,6 +20,10 @@ public class ContainerService : IContainerService
         _mapper = mapper;
     }
 
+    /// <summary>
+    /// Обновление статуса контейнера
+    /// </summary>
+    /// <param name="updatingContainerDto">DTO обновляемгого контейнера</param>
     public Task UpdateAsync(UpdatingContainerDto updatingContainerDto)
     {
         throw new NotImplementedException();

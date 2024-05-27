@@ -6,6 +6,9 @@ using Services.Services.Contracts;
 
 namespace WebApi.Controllers;
 
+/// <summary>
+/// Контроллер заказов
+/// </summary>
 [ApiController]
 [Route("[controller]")]
 public class OrderController : ControllerBase
