@@ -2,6 +2,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain;
 
+/// <summary>
+/// Заказ
+/// </summary>
 [Table("orders")]
 public class Order : BaseEntity
 {

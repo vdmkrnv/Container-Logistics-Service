@@ -21,11 +21,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Repositories.Implementations\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Domain\Domain.csproj" />
+      <ProjectReference Include="..\Services\Services.csproj" />
     </ItemGroup>
 
 </Project>

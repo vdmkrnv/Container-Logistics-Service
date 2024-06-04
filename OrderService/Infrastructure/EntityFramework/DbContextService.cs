@@ -4,6 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.EntityFramework;
 
+/// <summary>
+/// Сервис конфигурации подключения к БД.
+/// </summary>
 public static class DbContextService
 {
     public static IServiceCollection ConfigureContext(this IServiceCollection services, 

@@ -5,5 +5,8 @@ namespace Services.Services.Contracts;
 /// </summary>
 public class CancelingOrderDto
 {
+    /// <summary>
+    ///  Идентификатор удаляемого заказа
+    /// </summary>
     public Guid Id { get; set; }
 }
