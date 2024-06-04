@@ -18,7 +18,7 @@ public class Program
 
         // Конфигурация контекста EF Core
         DbContextService.ConfigureContext(builder.Services,
-            builder.Configuration.GetConnectionString("DefaultConnectionString"));
+            builder.Configuration.GetConnectionString("DefaultConnectionString")!);
         builder.Services.AddScoped<DbContext, DataContext>();
         
         // Автомаппер

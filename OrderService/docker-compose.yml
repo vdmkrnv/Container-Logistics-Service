@@ -15,6 +15,7 @@ services:
       - deploy-dev
     depends_on:
       - order-db
+      - rabbitmq
   order-db:
     container_name: order-db
     image: postgres:latest
@@ -44,7 +45,6 @@ services:
       - deploy-dev
     volumes:
       - .rabbit-data:/var/lib/rabbitmq
-      
 volumes:
   postgres-data:
   rabbit-data:
