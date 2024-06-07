@@ -1,7 +1,10 @@
-﻿namespace Domain
+﻿namespace Domain;
+
+/// <summary>
+/// Базовая сущность
+/// </summary>
+public class BaseEntity
 {
-	public class BaseEntity
-	{
-		public Guid Id { get; set; }
-	}
+	public Guid Id { get; set; }
 }
+

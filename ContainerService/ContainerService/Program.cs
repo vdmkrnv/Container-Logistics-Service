@@ -1,4 +1,7 @@
 
+using Infrastructure.EntityFramework;
+using Microsoft.EntityFrameworkCore;
+
 namespace ContainerService
 {
 	public class Program
@@ -7,10 +10,13 @@ namespace ContainerService
 		{
 			var builder = WebApplication.CreateBuilder(args);
 
-			// Add services to the container.
-
 			builder.Services.AddControllers();
-			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+			
+			// Конфигурация контекста EF Core
+			DataContextService.ConfigureContext(builder.Services,
+				builder.Configuration.GetConnectionString("DefaultConnectionString")!);
+			builder.Services.AddScoped<DbContext, DataContext>();
+			
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
 
@@ -23,8 +29,7 @@ namespace ContainerService
 				app.UseSwaggerUI();
 			}
 
-			app.UseAuthorization();
-
+			app.UseHttpsRedirection();
 
 			app.MapControllers();
 

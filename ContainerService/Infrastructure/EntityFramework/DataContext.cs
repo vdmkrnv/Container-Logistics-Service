@@ -14,11 +14,4 @@ public class DataContext : DbContext
 		// Database.EnsureDeleted();
 		// Database.EnsureCreated();
 	}
-
-	protected override void OnModelCreating(ModelBuilder modelBuilder)
-	{
-		base.OnModelCreating(modelBuilder);
-
-		//modelBuilder.Ignore<Container>();
-	}
 }
