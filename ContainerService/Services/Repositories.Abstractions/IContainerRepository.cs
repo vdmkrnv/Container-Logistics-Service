@@ -1,11 +1,11 @@
-﻿using Services.Services.Contracts.Container;
+﻿using Domain;
 
 namespace Services.Repositories.Abstractions;
 
 /// <summary>
 /// Репозиторий для контейнеров
 /// </summary>
-public interface IContainerRepository
+public interface IContainerRepository : IRepository<Container>
 {
-
+    
 }

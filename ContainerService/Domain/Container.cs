@@ -13,7 +13,7 @@ public class Container : BaseEntity
 	/// <summary>
 	/// Идентификатор типа контейнера
 	/// </summary>
-	public Guid ContainerTypeId { get; set; }
+	public Guid TypeId { get; set; }
 	
 	/// <summary>
 	/// Свойство для доступа к типу контейнера (для EFCore)
@@ -24,4 +24,14 @@ public class Container : BaseEntity
 	/// Статус занятости контейнера
 	/// </summary>
 	public bool IsEngaged { get; set; }
+	
+	/// <summary>
+	/// До какого числа занят контейнер
+	/// </summary>
+	public DateTime? EngagedUntil { get; set; }
+	
+	/// <summary>
+	/// Удален ли контейнер
+	/// </summary>
+	public bool IsDeleted { get; set; }
 }

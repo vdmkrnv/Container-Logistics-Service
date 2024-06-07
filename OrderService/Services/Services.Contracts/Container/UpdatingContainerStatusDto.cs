@@ -3,7 +3,7 @@ namespace Services.Services.Contracts.Container;
 /// <summary>
 /// DTO обновляемого статуса занятости контейнера
 /// </summary>
-public class UpdatingContainerDto
+public class UpdatingContainerStatusDto
 {
     public Guid Id { get; set; }
     
@@ -11,4 +11,9 @@ public class UpdatingContainerDto
     /// Статус занятости контейнера
     /// </summary>
     public bool IsEngaged { get; set; }
+    
+    /// <summary>
+    /// До какого числа занят контейнер
+    /// </summary>
+    public DateTime? EngagedUntil { get; set; }
 }
