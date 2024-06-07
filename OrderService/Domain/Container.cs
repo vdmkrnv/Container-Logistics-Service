@@ -19,4 +19,9 @@ public class Container : BaseEntity
     /// Статус занятости контейнера
     /// </summary>
     public bool IsEngaged { get; set; }
+    
+    /// <summary>
+    /// До какого числа занят контейнер
+    /// </summary>
+    public DateTime? EngagedUntil { get; set; }
 }

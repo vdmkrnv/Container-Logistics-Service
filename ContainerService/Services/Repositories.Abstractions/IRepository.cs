@@ -1,6 +1,11 @@
-﻿namespace Services.Repositories.Abstractions;
+﻿using Domain;
 
-public interface IRepository
+namespace Services.Repositories.Abstractions;
+
+/// <summary>
+/// Общий репозиторий
+/// </summary>
+public interface IRepository<T> where T : BaseEntity
 {
-
+    
 }

@@ -1,15 +1,15 @@
-﻿namespace Services.Services.Contracts.ContainerType;
+namespace Services.Services.Contracts.ContainerType;
 
 /// <summary>
-/// DTO типа контейнера
+/// DTO обновляемого контейнера
 /// </summary>
-public class ContainerTypeDto
+public class UpdatingContainerTypeDto
 {
     /// <summary>
     /// Идентификатор типа контейнера
     /// </summary>
     public Guid Id { get; set; }
-
+    
     /// <summary>
     /// Имя типа
     /// </summary>

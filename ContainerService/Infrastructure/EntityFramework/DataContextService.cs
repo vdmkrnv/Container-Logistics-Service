@@ -3,6 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.EntityFramework;
 
+/// <summary>
+/// Сервис для конфигурации контекста
+/// </summary>
 public static class DataContextService
 {
     public static IServiceCollection ConfigureContext(this IServiceCollection services, 

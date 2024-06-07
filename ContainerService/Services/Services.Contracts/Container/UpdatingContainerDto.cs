@@ -1,20 +1,15 @@
 namespace Services.Services.Contracts.Container;
 
 /// <summary>
-/// DTO контейнера
+/// DTO обновляемого контейнера
 /// </summary>
-public class ContainerDto
+public class UpdatingContainerDto
 {
     /// <summary>
-    /// Идентификатор
-    /// </summary>
-    public Guid Id { get; set; }
-    
-    /// <summary>
-    /// ISO номер контейнера
+    /// Номер ISO
     /// </summary>
     public string IsoNumber { get; set; }
-    
+
     /// <summary>
     /// Идентификатор типа контейнера
     /// </summary>
