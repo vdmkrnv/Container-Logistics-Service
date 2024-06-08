@@ -15,8 +15,8 @@ public class ContainerRepository : Repository<Container>, IContainerRepository
     /// <summary>
     /// Обновление статуса контейнера
     /// </summary>
-    /// <param name="updatingContainerDto">DTO обновляемого контейнера</param>
-    public async Task UpdateEngagedStatus(UpdatingContainerDto updatingContainerDto)
+    /// <param name="updatingContainerStatusDto">DTO обновляемого контейнера</param>
+    public async Task UpdateEngagedStatus(UpdatingContainerStatusDto updatingContainerStatusDto)
     {
         throw new NotImplementedException();
     }

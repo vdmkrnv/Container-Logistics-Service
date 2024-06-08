@@ -11,7 +11,7 @@ public class ContainerMappingProfile : Profile
 {
     public ContainerMappingProfile()
     {
-        CreateMap<ContainerDto, UpdatingContainerDto>()
+        CreateMap<ContainerDto, UpdatingContainerStatusDto>()
             .ForMember(d => d.IsEngaged, map => map.Ignore());
 
         CreateMap<ContainerDto, Container>()

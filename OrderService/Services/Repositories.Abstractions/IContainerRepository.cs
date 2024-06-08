@@ -11,6 +11,6 @@ public interface IContainerRepository : IRepository<Container>
     /// <summary>
     /// Обновление статуса занятости контейнера
     /// </summary>
-    /// <param name="updatingContainerDto">обновляемый контейнер</param>
-    public Task UpdateEngagedStatus(UpdatingContainerDto updatingContainerDto);
+    /// <param name="updatingContainerStatusDto">обновляемый контейнер</param>
+    public Task UpdateEngagedStatus(UpdatingContainerStatusDto updatingContainerStatusDto);
 }

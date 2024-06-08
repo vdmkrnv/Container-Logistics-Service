@@ -77,6 +77,7 @@ public abstract class Repository<T> : IRepository<T>
         if (entity != null)
         {
             DbContext.Set<T>().Remove(entity);
+            await DbContext.SaveChangesAsync();
             return true;
         }
 

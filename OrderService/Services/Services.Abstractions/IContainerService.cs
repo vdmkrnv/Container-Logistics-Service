@@ -10,7 +10,7 @@ public interface IContainerService
     /// <summary>
     /// Обновить статус занятости контейнера
     /// </summary>
-    /// <param name="updatingContainerDto"></param>
+    /// <param name="updatingContainerStatusDto">DTO обновляемого статуса контейнера</param>
     /// <returns></returns>
-    Task UpdateAsync(UpdatingContainerDto updatingContainerDto);
+    Task UpdateAsync(UpdatingContainerStatusDto updatingContainerStatusDto);
 }

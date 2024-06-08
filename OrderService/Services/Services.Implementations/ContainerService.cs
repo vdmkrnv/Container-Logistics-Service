@@ -23,8 +23,8 @@ public class ContainerService : IContainerService
     /// <summary>
     /// Обновление статуса контейнера
     /// </summary>
-    /// <param name="updatingContainerDto">DTO обновляемгого контейнера</param>
-    public Task UpdateAsync(UpdatingContainerDto updatingContainerDto)
+    /// <param name="updatingContainerStatusDto">DTO обновляемгого контейнера</param>
+    public Task UpdateAsync(UpdatingContainerStatusDto updatingContainerStatusDto)
     {
         throw new NotImplementedException();
     }

@@ -22,7 +22,7 @@ public class OrderRepository : Repository<Order>, IOrderRepository
         if (order != null)
         {
             order.IsCanceled = true;
-            DbContext.SaveChangesAsync();
+            await DbContext.SaveChangesAsync();
             return true;
         }
 
