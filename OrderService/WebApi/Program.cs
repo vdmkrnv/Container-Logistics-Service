@@ -21,6 +21,7 @@ public class Program
             builder.Configuration.GetConnectionString("DefaultConnectionString")!);
         builder.Services.AddScoped<DbContext, DataContext>();
         
+        
         // Автомаппер
         builder.Services.AddAutoMapper(typeof(OrderMappingProfile), typeof(ContainerMappingProfile));
         

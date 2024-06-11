@@ -6,14 +6,14 @@ using Services.Services.Contracts;
 namespace Infrastructure.Repositories.Implementations;
 
 /// <summary>
-/// Репозиторий заказов
+/// Репозиторий заказов.
 /// </summary>
 public class OrderRepository : Repository<Order>, IOrderRepository
 {
     public OrderRepository(DbContext dbContext) : base(dbContext) { }
-
+    
     /// <summary>
-    /// Отмена заказа
+    /// Отмена заказа.
     /// </summary>
     /// <param name="cancelingOrderDto">DTO отменяемого заказа</param>
     public async Task<bool> CancelAsync(CancelingOrderDto cancelingOrderDto)

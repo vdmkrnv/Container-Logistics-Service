@@ -12,7 +12,7 @@ public abstract class Repository<T> : IRepository<T>
     where T : BaseEntity
 {
     protected readonly DbContext DbContext;
-
+    
     public Repository(DbContext dbContext)
     {
         DbContext = dbContext;

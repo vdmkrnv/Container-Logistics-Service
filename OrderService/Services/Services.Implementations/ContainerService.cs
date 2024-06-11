@@ -1,4 +1,5 @@
 using AutoMapper;
+using Domain;
 using Services.Repositories.Abstractions;
 using Services.Services.Abstractions;
 using Services.Services.Contracts.Container;
@@ -19,13 +20,15 @@ public class ContainerService : IContainerService
         _repository = repository;
         _mapper = mapper;
     }
-
+    
     /// <summary>
     /// Обновление статуса контейнера
     /// </summary>
     /// <param name="updatingContainerStatusDto">DTO обновляемгого контейнера</param>
-    public Task UpdateAsync(UpdatingContainerStatusDto updatingContainerStatusDto)
+    public async Task<bool> UpdateAsync(UpdatingContainerStatusDto updatingContainerStatusDto)
     {
-        throw new NotImplementedException();
+        Container container = 
+            _mapper.Map<UpdatingContainerStatusDto, Container>(updatingContainerStatusDto);
+        return await _repository.UpdateAsync(container);
     }
 }
