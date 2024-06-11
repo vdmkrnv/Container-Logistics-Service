@@ -6,6 +6,11 @@ namespace Services.Services.Contracts.Container;
 public class UpdatingContainerDto
 {
     /// <summary>
+    /// Идентификатор контейнера.
+    /// </summary>
+    public Guid Id { get; set; }
+    
+    /// <summary>
     /// Номер ISO
     /// </summary>
     public string IsoNumber { get; set; }

@@ -3,7 +3,7 @@ using Services.Services.Contracts.Container;
 namespace Services.Services.Abstractions;
 
 /// <summary>
-/// Интерфейс сервиса контейнеров
+/// Интерфейс сервиса контейнеров.
 /// </summary>
 public interface IContainerService
 {
@@ -31,4 +31,10 @@ public interface IContainerService
     /// </summary>
     /// <param name="updatingContainerDto">DTO изменяемого контейнера</param>
     Task<bool> UpdateAsync(UpdatingContainerDto updatingContainerDto);
+    
+    /// <summary>
+    /// Обновление статуса контейнера.
+    /// </summary>
+    /// <param name="updatingContainerStatusDto">DTO обновляемого статуса контейнера</param>
+    Task<bool> UpdateContainerStatusAsync(List<UpdatingContainerStatusDto> updatingContainerStatusDto);
 }

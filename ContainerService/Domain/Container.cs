@@ -31,7 +31,7 @@ public class Container : BaseEntity
 	public DateTime? EngagedUntil { get; set; }
 	
 	/// <summary>
-	/// Удален ли контейнер
+	/// Флаг удаления
 	/// </summary>
 	public bool IsDeleted { get; set; }
 }
