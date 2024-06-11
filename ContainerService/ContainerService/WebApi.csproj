@@ -20,9 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
     <Folder Include="Mapping\" />
-    <Folder Include="Settings\" />
   </ItemGroup>
 
   <ItemGroup>
