@@ -1,27 +1,29 @@
+using Infrastructure;
+
 namespace WebApi.Settings;
 
 /// <summary>
 /// Настройки RabbitMQ
 /// </summary>
-public class RmqSettings
+public class RmqSettings : IRmqSettings
 {
      /// <summary>
      /// Хост
      /// </summary>
-     string Host { get; set; }
+     public string Host { get; set; }
     
      /// <summary>
      /// Виртуальный хост
      /// </summary>
-     string VHost { get; set; }
+     public string VHost { get; set; }
      
      /// <summary>
      /// Логин
      /// </summary>
-     string Login { get; set; }
+     public string Login { get; set; }
      
      /// <summary>
      /// Пароль
      /// </summary>
-     string Password { get; set; }
+     public string Password { get; set; }
 }

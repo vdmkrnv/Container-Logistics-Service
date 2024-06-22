@@ -27,8 +27,6 @@ public class ContainerService : IContainerService
     /// <param name="updatingContainerStatusDto">DTO обновляемгого контейнера</param>
     public async Task<bool> UpdateAsync(UpdatingContainerStatusDto updatingContainerStatusDto)
     {
-        Container container = 
-            _mapper.Map<UpdatingContainerStatusDto, Container>(updatingContainerStatusDto);
-        return await _repository.UpdateAsync(container);
+        throw new NotImplementedException();
     }
 }

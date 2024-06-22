@@ -1,17 +1,14 @@
 namespace Infrastructure;
 
 /// <summary>
-/// Сервис для работы с RabbitMQ.
+/// Интерфейс для сервиса шины RabbitMQ.
 /// </summary>
-public class RabbitMqService : IRabbitMqService
+public interface IRabbitMqBus
 {
     /// <summary>
     /// Опубликовать сообщение.
     /// </summary>
     /// <param name="message">Объект сообщения</param>
     /// <typeparam name="T">Тип сообщения</typeparam>
-    public Task PublishAsync<T>(T message)
-    {
-        throw new NotImplementedException();
-    }
+    public Task<bool> PublishAsync<T>(T message);
 }
