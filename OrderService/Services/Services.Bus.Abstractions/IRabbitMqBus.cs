@@ -10,5 +10,5 @@ public interface IRabbitMqBus
     /// </summary>
     /// <param name="message">Объект сообщения</param>
     /// <typeparam name="T">Тип сообщения</typeparam>
-    public Task<bool> PublishAsync<T>(T message);
+    public Task<bool> PublishAsync<T>(IList<T> message, string queueName, string exchangeName, string routingKey);
 }

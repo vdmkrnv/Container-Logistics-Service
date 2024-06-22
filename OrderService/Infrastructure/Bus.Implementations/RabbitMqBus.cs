@@ -21,14 +21,14 @@ public class RabbitMqBus : IRabbitMqBus
     /// </summary>
     /// <param name="message">Объект сообщения</param>
     /// <typeparam name="T">Тип сообщения</typeparam>
-    public Task<bool> PublishAsync<T>(T message)
+    public Task<bool> PublishAsync<T>(IList<T> message, string queueName, string exchangeName, string routingKey)
     {
         try
         {
             using var conn = _connectionService.GetConnection(_settings);
             using var channel = conn.CreateModel();
         
-            channel.QueueDeclare(queue: "test_queue", 
+            channel.QueueDeclare(queue: queueName, 
                 durable: true, 
                 exclusive: false, 
                 autoDelete: false, 
@@ -39,8 +39,8 @@ public class RabbitMqBus : IRabbitMqBus
             var properties = channel.CreateBasicProperties();
             properties.Persistent = true;
         
-            channel.BasicPublish(exchange: string.Empty,
-                routingKey: "my_queue",
+            channel.BasicPublish(exchange: exchangeName,
+                routingKey: routingKey,
                 basicProperties: properties,
                 body: body);
 
