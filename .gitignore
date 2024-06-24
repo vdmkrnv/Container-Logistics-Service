@@ -362,8 +362,13 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
-#Private servers options
+# Private servers options
 /Servers
 
-#Rider IDE
+# Rider IDE
 .idea/
+
+# Docker volumes
+.rabbit-data
+.postgres-data-order-db
+.postgres-data-container-db
