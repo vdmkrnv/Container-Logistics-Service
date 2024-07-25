@@ -3,8 +3,12 @@ namespace Domain;
 /// <summary>
 /// Контейнер
 /// </summary>
-public class Container : BaseEntity
+public class Container 
 {
+    public Guid Id { get; set; }
+    
+    public Guid OrderId { get; set; }
+    
     /// <summary>
     /// ISO номер контейнера
     /// </summary>
@@ -13,7 +17,7 @@ public class Container : BaseEntity
     /// <summary>
     /// Id типа контейнера
     /// </summary>
-    public Guid TypeId { get; set; }
+    public int TypeId { get; set; }
     
     /// <summary>
     /// Статус занятости контейнера
@@ -24,4 +28,6 @@ public class Container : BaseEntity
     /// До какого числа занят контейнер
     /// </summary>
     public DateTime? EngagedUntil { get; set; }
+    
+    public bool IsDeleted { get; set; }
 }

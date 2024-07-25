@@ -7,13 +7,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.6" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.6">
+      <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.7">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.6" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.6">
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.7" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.7">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
@@ -23,7 +24,12 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Domain\Domain.csproj" />
+      <ProjectReference Include="..\Exceptions\Exceptions.csproj" />
       <ProjectReference Include="..\Services\Services.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Bus.Implementations\" />
     </ItemGroup>
 
 </Project>

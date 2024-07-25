@@ -1,56 +1,120 @@
 using AutoMapper;
 using Domain;
-using Services.Repositories.Abstractions;
-using Services.Services.Abstractions;
-using Services.Services.Contracts;
+using Exceptions.Services;
+using FluentValidation;
+using Microsoft.AspNetCore.Http;
+using Services.Models.Request;
+using Services.Models.Response;
+using Services.Repositories.Interfaces;
+using Services.Services.Interfaces;
 
 namespace Services.Services.Implementations;
 
 /// <summary>
 /// Сервис заказов
 /// </summary>
-public class OrderService : IOrderService
+public class OrderService(
+    IOrderRepository orderRepository,
+    IMapper mapper,
+    IValidator<CreateOrderModel> createOrderValidator,
+    IValidator<UpdateOrderModel> updateOrderValidator,
+    IValidator<DeleteOrderModel> deleteOrderValidator,
+    IValidator<GetOrderByIdModel> getOrderByIdValidator,
+    IValidator<GetOrdersByClientIdModel> getOrdersByClientIdValidator,
+    IValidator<GetAllOrdersModel> getAllOrdersValidator) : IOrderService
 {
-    private readonly IOrderRepository _repository;
-    private readonly IMapper _mapper;
-
-    public OrderService(IOrderRepository repository, IMapper mapper)
+    public async Task<Guid> Create(CreateOrderModel model)
     {
-        _repository = repository;
-        _mapper = mapper;
+        var validationResult = await createOrderValidator.ValidateAsync(model);
+        if (!validationResult.IsValid)
+            throw new ServiceException
+            {
+                Title = "Model invalid",
+                Message = "Model validation failed",
+                StatusCode = StatusCodes.Status400BadRequest
+            };
+
+        var id = await orderRepository.AddAsync(mapper.Map<Order>(model));
+        return id;
     }
     
-    /// <summary>
-    /// Добавление нового заказа
-    /// </summary>
-    /// <param name="creatingOrderDto">DTO создаваемого заказа</param>
-    public async Task<bool> AddAsync(CreatingOrderDto creatingOrderDto)
+    public async Task<OrderModel> Update(UpdateOrderModel model)
     {
-        var order = _mapper.Map<CreatingOrderDto, Order>(creatingOrderDto);
-        order.Id = Guid.NewGuid();
+        var validationResult = await updateOrderValidator.ValidateAsync(model);
+        if (!validationResult.IsValid)
+            throw new ServiceException
+            {
+                Title = "Model invalid",
+                Message = "Model validation failed",
+                StatusCode = StatusCodes.Status400BadRequest
+            };
         
-        return await _repository.AddAsync(order);
+        var order = await orderRepository.UpdateAsync(mapper.Map<Order>(model));
+        var result = mapper.Map<OrderModel>(order);
+        return result;
     }
 
-    /// <summary>
-    /// Получение заказа по id
-    /// </summary>
-    /// <param name="id">Идентификатор заказа</param>
-    /// <returns>DTO заказа</returns>
-    public async Task<OrderDto> GetAsync(Guid id)
+    public async Task<OrderModel> Delete(DeleteOrderModel model)
     {
-        var order = await _repository.GetAsync(id);
-        var orderDto = _mapper.Map<Order, OrderDto>(order);
-
-        return orderDto;
+        var validationResult = await deleteOrderValidator.ValidateAsync(model);
+        if (!validationResult.IsValid)
+            throw new ServiceException
+            {
+                Title = "Model invalid",
+                Message = "Model validation failed",
+                StatusCode = StatusCodes.Status400BadRequest
+            };
+        
+        var order = await orderRepository.DeleteAsync(mapper.Map<Order>(model));
+        var result = mapper.Map<OrderModel>(order);
+        return result;
     }
-
-    /// <summary>
-    /// Отмена заказа
-    /// </summary>
-    /// <param name="cancelingOrderDto">DTO отменяемого заказа</param>
-    public async Task<bool> CancelAsync(CancelingOrderDto cancelingOrderDto)
+    
+    public async Task<OrderModel> GetById(GetOrderByIdModel model)
     {
-        return await _repository.CancelAsync(cancelingOrderDto);
+        var validationResult = await getOrderByIdValidator.ValidateAsync(model);
+        if (!validationResult.IsValid)
+            throw new ServiceException
+            {
+                Title = "Model invalid",
+                Message = "Model validation failed",
+                StatusCode = StatusCodes.Status400BadRequest
+            };
+        
+        var order = await orderRepository.GetByIdAsync(mapper.Map<Order>(model));
+        var result = mapper.Map<OrderModel>(order);
+        return result;
+    }
+    
+    public async Task<List<OrderModel>> GetByClientId(GetOrdersByClientIdModel model)
+    {
+        var validationResult = await getOrdersByClientIdValidator.ValidateAsync(model);
+        if (!validationResult.IsValid)
+            throw new ServiceException
+            {
+                Title = "Model invalid",
+                Message = "Model validation failed",
+                StatusCode = StatusCodes.Status400BadRequest
+            };
+        
+        var orders = await orderRepository.GetByClientIdAsync(mapper.Map<Order>(model));
+        var result = mapper.Map<List<OrderModel>>(orders);
+        return result;
+    }
+    
+    public async Task<List<OrderModel>> GetAll(GetAllOrdersModel model)
+    {
+        var validationResult = await getAllOrdersValidator.ValidateAsync(model);
+        if (!validationResult.IsValid)
+            throw new ServiceException
+            {
+                Title = "Model invalid",
+                Message = "Model validation failed",
+                StatusCode = StatusCodes.Status400BadRequest
+            };
+        
+        var orders = await orderRepository.GetAllAsync(model.Page, model.PageSize);
+        var result = mapper.Map<List<OrderModel>>(orders);
+        return result;
     }
 }
