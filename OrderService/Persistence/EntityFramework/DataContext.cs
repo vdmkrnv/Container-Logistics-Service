@@ -25,11 +25,6 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
 
         modelBuilder.Entity<Container>().Property(x => x.Id).HasColumnName("id");
         modelBuilder.Entity<Container>().Property(x => x.OrderId).HasColumnName("order_id");
-        modelBuilder.Entity<Container>().Property(x => x.IsoNumber).HasColumnName("iso_number");
-        modelBuilder.Entity<Container>().Property(x => x.TypeId).HasColumnName("type_id");
-        modelBuilder.Entity<Container>().Property(x => x.IsEngaged).HasColumnName("is_engaged");
-        modelBuilder.Entity<Container>().Property(x => x.EngagedUntil).HasColumnName("engaged_until");
-        modelBuilder.Entity<Container>().Property(x => x.IsDeleted).HasColumnName("is_deleted");
 
 
         modelBuilder.Entity<DownTime>().Property(x => x.Id).HasColumnName("id");

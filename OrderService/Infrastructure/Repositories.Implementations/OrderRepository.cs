@@ -52,6 +52,7 @@ public class OrderRepository(DbContext context) : IOrderRepository
 
     public async Task<Order> DeleteAsync(Order order)
     {
+        // TODO: Single responsibility??
         var result = await context.Set<Order>()
             .Include(x => x.Containers)
             .Include(x => x.DownTimes)
@@ -78,6 +79,7 @@ public class OrderRepository(DbContext context) : IOrderRepository
 
     public async Task<Order> UpdateAsync(Order order)
     {
+        // TODO: Single responsibility??
         var result = await context.Set<Order>()
             .FirstOrDefaultAsync(x => x.Id == order.Id && x.IsDeleted == false);
         if (result != null)

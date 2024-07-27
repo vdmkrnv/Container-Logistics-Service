@@ -1,4 +1,3 @@
-using Services.Models.OtherModels;
 using Services.Models.Response;
 
 namespace WebApi.Models.Response;

@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using Persistence.EntityFramework;
 using WebApi.Extensions;
 using WebApi.Middlewares;
 
@@ -15,7 +13,8 @@ public class Program
         services.AddControllers();
 
         // Extensions
-        services.AddDataContext(builder.Configuration.GetConnectionString("DefaultConnectionString")!);
+        services.AddDataContext(builder.Configuration
+            .GetConnectionString("DefaultConnectionString")!);
         services.AddSwagger();
         services.AddValidation();
         services.AddMappers();
@@ -23,6 +22,7 @@ public class Program
         services.AddRepositories();
         services.AddVersioning();
         services.AddExceptionHandling();
+        services.ConfigureMassTransit(builder.Configuration);
         
         var app = builder.Build();
 

@@ -1,8 +1,10 @@
 using AutoMapper;
+using BusModels;
 using Domain;
 using Exceptions.Services;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
+using Services.Bus.Interfaces;
 using Services.Models.Request;
 using Services.Models.Response;
 using Services.Repositories.Interfaces;
@@ -16,6 +18,9 @@ namespace Services.Services.Implementations;
 public class OrderService(
     IOrderRepository orderRepository,
     IMapper mapper,
+    ICreateOrderProducer createOrderProducer,
+    IDeleteOrderProducer deleteOrderProducer,
+    IUpdateOrderProducer updateOrderProducer,
     IValidator<CreateOrderModel> createOrderValidator,
     IValidator<UpdateOrderModel> updateOrderValidator,
     IValidator<DeleteOrderModel> deleteOrderValidator,
@@ -35,6 +40,14 @@ public class OrderService(
             };
 
         var id = await orderRepository.AddAsync(mapper.Map<Order>(model));
+        var message = new OrderCreated
+        {
+            ContainerIds = model.Containers.Select(c => c.Id).ToList(),
+            OrderId = id,
+            EngagedUntil = model.DateEnd
+        };
+        await createOrderProducer.NotifyOrderCreated(message);
+        
         return id;
     }
     
@@ -50,6 +63,14 @@ public class OrderService(
             };
         
         var order = await orderRepository.UpdateAsync(mapper.Map<Order>(model));
+        var message = new OrderUpdated
+        {
+            ContainerIds = order.Containers.Select(c => c.Id).ToList(),
+            OrderId = order.Id,
+            EngagedUntil = order.DateEnd
+        };
+        await updateOrderProducer.NotifyOrderUpdated(message);
+        
         var result = mapper.Map<OrderModel>(order);
         return result;
     }
@@ -66,6 +87,9 @@ public class OrderService(
             };
         
         var order = await orderRepository.DeleteAsync(mapper.Map<Order>(model));
+        await deleteOrderProducer.NotifyOrderDeleted(new OrderDeleted
+            { ContainerIds = order.Containers.Select(c => c.Id).ToList() });
+        
         var result = mapper.Map<OrderModel>(order);
         return result;
     }

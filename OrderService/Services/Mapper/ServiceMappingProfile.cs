@@ -96,13 +96,8 @@ public class ServiceMappingProfile : Profile
 
 
         CreateMap<ContainerModel, Container>()
-            .ForMember(d => d.IsoNumber, map => map.MapFrom(c => c.IsoNumber))
-            .ForMember(d => d.TypeId, map => map.MapFrom(c => c.TypeId))
             .ForMember(d => d.Id, map => map.MapFrom(c => c.Id))
-            .ForMember(d => d.OrderId, map => map.Ignore())
-            .ForMember(d => d.IsEngaged, map => map.Ignore())
-            .ForMember(d => d.EngagedUntil, map => map.Ignore())
-            .ForMember(d => d.IsDeleted, map => map.Ignore());
+            .ForMember(d => d.OrderId, map => map.Ignore());
 
         
         CreateMap<DownTimeModel, DownTime>()
@@ -126,11 +121,10 @@ public class ServiceMappingProfile : Profile
             .ForMember(d => d.Price, map => map.MapFrom(c => c.Price))
             .ForMember(d => d.Containers, map => map.MapFrom(c => c.Containers))
             .ForMember(d => d.DownTimes, map => map.MapFrom(c => c.DownTimes));
-        
-        
+
+
         CreateMap<Container, ContainerModel>()
-            .ForMember(d => d.IsoNumber, map => map.MapFrom(c => c.IsoNumber))
-            .ForMember(d => d.TypeId, map => map.MapFrom(c => c.TypeId));
+            .ForMember(d => d.Id, map => map.MapFrom(c => c.Id));
 
         
         CreateMap<DownTime, DownTimeModel>()

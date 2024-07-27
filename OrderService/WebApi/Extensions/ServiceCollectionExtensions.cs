@@ -1,8 +1,12 @@
 using Asp.Versioning;
 using FluentValidation;
+using Infrastructure.Bus.Implementations;
 using Infrastructure.Repositories.Implementations;
+using Infrastructure.Settings;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Persistence.EntityFramework;
+using Services.Bus.Interfaces;
 using Services.Mapper;
 using Services.Models.Request;
 using Services.Repositories.Interfaces;
@@ -93,6 +97,29 @@ public static class ServiceCollectionExtensions
     {
         services.AddTransient<ExceptionHandlerMiddleware>();
         
+        return services;
+    }
+    
+    public static IServiceCollection ConfigureMassTransit(this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        var rmqSettings = configuration.GetSection("RmqSettings").Get<RmqSettings>();
+        
+        services.AddMassTransit(options =>
+        {
+            options.UsingRabbitMq((context, cfg) =>
+                cfg.Host(rmqSettings.Host, rmqSettings.Vhost, h =>
+                {
+                    h.Username(rmqSettings.Username);
+                    h.Password(rmqSettings.Password);
+                }));
+        });
+
+        // Producers
+        services.AddScoped<ICreateOrderProducer, CreateOrderProducer>();
+        services.AddScoped<IDeleteOrderProducer, DeleteOrderProducer>();
+        services.AddScoped<IUpdateOrderProducer, UpdateOrderProducer>();
+
         return services;
     }
 }
