@@ -3,8 +3,12 @@ namespace Domain;
 /// <summary>
 /// Время простоя
 /// </summary>
-public class DownTime : BaseEntity
+public class DownTime
 {
+    public Guid Id { get; set; }
+    
+    public Guid OrderId { get; set; }
+    
     /// <summary>
     /// Дата начала простоя
     /// </summary>
@@ -19,4 +23,6 @@ public class DownTime : BaseEntity
     /// Id хаба
     /// </summary>
     public Guid HubId { get; set; }
+    
+    public bool IsDeleted { get; set; }
 }

@@ -1,8 +1,11 @@
+using Asp.Versioning;
 using AutoMapper;
-using Domain;
 using Microsoft.AspNetCore.Mvc;
-using Services.Services.Abstractions;
-using Services.Services.Contracts;
+using Services.Models.Request;
+using Services.Services.Interfaces;
+using WebApi.Models;
+using WebApi.Models.Request;
+using WebApi.Models.Response;
 
 namespace WebApi.Controllers;
 
@@ -10,28 +13,77 @@ namespace WebApi.Controllers;
 /// Контроллер заказов
 /// </summary>
 [ApiController]
-[Route("[controller]")]
-public class OrderController : ControllerBase
+[Route("api/v{v:apiVersion}/orders")]
+[ApiVersion(1)]
+public class OrderController(
+    IMapper mapper,
+    IOrderService orderService) : ControllerBase
 {
-    private readonly IOrderService _service;
-    private readonly IMapper _mapper;
-
-    public OrderController(IOrderService service, IMapper mapper)
+    [HttpGet]
+    public async Task<CommonResponse<GetAllOrdersResponse>> GetAll(
+        [FromQuery] int page,
+        [FromQuery] int pageSize)
     {
-        _service = service;
-        _mapper = mapper;
+        var orders = await orderService.GetAll(
+            new GetAllOrdersModel { Page = page, PageSize = pageSize });
+        var response = new CommonResponse<GetAllOrdersResponse>
+            { Data = new GetAllOrdersResponse { Orders = orders } };
+
+        return response;
     }
     
-    [HttpGet]
-    public async Task<OrderDto> Get(Guid id)
+    [HttpGet("{id:guid}")]
+    public async Task<CommonResponse<GetOrderByIdResponse>> GetById(
+        [FromRoute] GetOrderByIdRequest request)
     {
-        return await _service.GetAsync(id);
+        var order = await orderService.GetById(mapper.Map<GetOrderByIdModel>(request));
+        var response = new CommonResponse<GetOrderByIdResponse> 
+            { Data = mapper.Map<GetOrderByIdResponse>(order) };
+
+        return response;
+    }
+    
+    [HttpGet("clients/{clientId:guid}")]
+    public async Task<CommonResponse<GetOrdersByClientIdResponse>> GetByClientId(
+        [FromRoute] GetOrdersByClientIdRequest request)
+    {
+        var orders = await orderService.GetByClientId(mapper.Map<GetOrdersByClientIdModel>(request));
+        var response = new CommonResponse<GetOrdersByClientIdResponse>
+            { Data = new GetOrdersByClientIdResponse { Orders = orders } };
+        
+        return response;
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add(CreatingOrderDto creatingOrderDto)
+    public async Task<CommonResponse<CreateOrderResponse>> Create(
+        CreateOrderRequest request)
     {
-        _service.AddAsync(creatingOrderDto);
-        return Ok();
+        var id = await orderService.Create(mapper.Map<CreateOrderModel>(request));
+        var response = new CommonResponse<CreateOrderResponse>
+            { Data = new CreateOrderResponse { Id = id } };
+        
+        return response;
+    }
+
+    [HttpPut]
+    public async Task<CommonResponse<UpdateOrderResponse>> Update(
+        UpdateOrderRequest request)
+    {
+        var order = await orderService.Update(mapper.Map<UpdateOrderModel>(request));
+        var response = new CommonResponse<UpdateOrderResponse> 
+            { Data = mapper.Map<UpdateOrderResponse>(order) };
+        
+        return response;
+    }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<CommonResponse<DeleteOrderResponse>> Delete(
+        [FromRoute] DeleteOrderRequest request)
+    {
+        var order = await orderService.Delete(mapper.Map<DeleteOrderModel>(request));
+        var response = new CommonResponse<DeleteOrderResponse> 
+            { Data = mapper.Map<DeleteOrderResponse>(order) };
+        
+        return response;
     }
 }

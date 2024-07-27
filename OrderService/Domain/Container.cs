@@ -3,25 +3,9 @@ namespace Domain;
 /// <summary>
 /// Контейнер
 /// </summary>
-public class Container : BaseEntity
+public class Container 
 {
-    /// <summary>
-    /// ISO номер контейнера
-    /// </summary>
-    public string IsoNumber { get; set; }
+    public Guid Id { get; set; }
     
-    /// <summary>
-    /// Id типа контейнера
-    /// </summary>
-    public Guid TypeId { get; set; }
-    
-    /// <summary>
-    /// Статус занятости контейнера
-    /// </summary>
-    public bool IsEngaged { get; set; }
-    
-    /// <summary>
-    /// До какого числа занят контейнер
-    /// </summary>
-    public DateTime? EngagedUntil { get; set; }
+    public Guid OrderId { get; set; }
 }
