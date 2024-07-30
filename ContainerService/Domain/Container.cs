@@ -3,8 +3,10 @@
 /// <summary>
 /// Доменная сущность контейнера
 /// </summary>
-public class Container : BaseEntity
+public class Container
 {
+	public Guid Id { get; set; }
+	
 	/// <summary>
 	/// Номер ISO
 	/// </summary>
@@ -13,12 +15,12 @@ public class Container : BaseEntity
 	/// <summary>
 	/// Идентификатор типа контейнера
 	/// </summary>
-	public Guid TypeId { get; set; }
+	public int TypeId { get; set; }
 	
 	/// <summary>
 	/// Свойство для доступа к типу контейнера (для EFCore)
 	/// </summary>
-	public ContainerType Type { get; set; }
+	public virtual Type Type { get; set; }
 
 	/// <summary>
 	/// Статус занятости контейнера

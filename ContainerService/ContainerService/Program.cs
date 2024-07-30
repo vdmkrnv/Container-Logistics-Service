@@ -1,38 +1,41 @@
 
-using Infrastructure.EntityFramework;
-using Microsoft.EntityFrameworkCore;
+using WebApi.Extensions;
+using WebApi.Middlewares;
 
-namespace ContainerService
+namespace WebApi
 {
 	public class Program
 	{
 		public static void Main(string[] args)
 		{
 			var builder = WebApplication.CreateBuilder(args);
-
-			builder.Services.AddControllers();
+			var services = builder.Services;
 			
-			// Конфигурация контекста EF Core
-			DataContextService.ConfigureContext(builder.Services,
-				builder.Configuration.GetConnectionString("DefaultConnectionString")!);
-			builder.Services.AddScoped<DbContext, DataContext>();
+			services.AddControllers();
 			
-			builder.Services.AddEndpointsApiExplorer();
-			builder.Services.AddSwaggerGen();
+			// Extensions
+			services.AddDataContext(builder.Configuration
+				.GetConnectionString("DefaultConnectionString")!);
+			services.AddSwagger();
+			services.AddValidation();
+			services.AddMappers();
+			services.AddRepositories();
+			services.AddServices();
+			services.AddVersioning();
+			services.AddExceptionHandling();
+			// services.ConfigureMassTransit(builder.Configuration);
+			
 
 			var app = builder.Build();
 
-			// Configure the HTTP request pipeline.
-			if (app.Environment.IsDevelopment())
-			{
-				app.UseSwagger();
-				app.UseSwaggerUI();
-			}
+			app.UseMiddleware<ExceptionHandlerMiddleware>();
+			
+			app.UseSwagger();
+			app.UseSwaggerUI();
 
 			app.UseHttpsRedirection();
 
 			app.MapControllers();
-
 			app.Run();
 		}
 	}

@@ -1,0 +1,137 @@
+using Asp.Versioning;
+using FluentValidation;
+using Infrastructure.Repositories.Implementations;
+using Microsoft.EntityFrameworkCore;
+using Persistence.EntityFramework;
+using Services.Mapper;
+using Services.Models.Request.Container;
+using Services.Models.Request.Type;
+using Services.Repositories.Interfaces;
+using Services.Services.Implementations;
+using Services.Services.Interfaces;
+using Services.Validation.Container;
+using Services.Validation.Type;
+using WebApi.Mapper;
+using ExceptionHandlerMiddleware = WebApi.Middlewares.ExceptionHandlerMiddleware;
+
+namespace WebApi.Extensions;
+
+public static class ServiceCollectionExtensions
+{
+    public static IServiceCollection AddDataContext(this IServiceCollection services, 
+        string connectionString)
+    {
+        services.AddDbContext<DataContext>(options =>
+            options.UseNpgsql(connectionString));
+        services.AddScoped<DbContext, DataContext>();
+        
+        return services;
+    }
+    
+     public static IServiceCollection AddSwagger(this IServiceCollection services)
+    {
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen();
+
+        return services;
+    }
+    
+    public static IServiceCollection AddValidation(this IServiceCollection services)
+    {
+        // Container
+        services.AddScoped<IValidator<CreateContainerModel>, CreateContainerValidator>();
+        services.AddScoped<IValidator<DeleteContainerModel>, DeleteContainerValidator>();
+        services.AddScoped<IValidator<GetContainerByIdModel>, GetContainerByIdValidator>();
+        services.AddScoped<IValidator<GetContainerByIsoModel>, GetContainerByIsoValidator>();
+        services.AddScoped<IValidator<GetContainersByTypeIdModel>, GetContainersByTypeIdValidator>();
+        services.AddScoped<IValidator<UpdateContainerModel>, UpdateContainerValidator>();
+        
+        // Type
+        services.AddScoped<IValidator<CreateTypeModel>, CreateTypeValidator>();
+        services.AddScoped<IValidator<DeleteTypeModel>, DeleteTypeValidator>();
+        services.AddScoped<IValidator<GetAllTypesModel>, GetAllTypesValidator>();
+        services.AddScoped<IValidator<GetTypeByIdModel>, GetTypeByIdValidator>();
+        services.AddScoped<IValidator<UpdateTypeModel>, UpdateTypeValidator>();
+        
+
+        return services;
+    }
+    
+    public static IServiceCollection AddMappers(this IServiceCollection services)
+    {
+        services.AddAutoMapper(
+            typeof(ServiceContainerMappingProfile),
+            typeof(ServiceContainerTypeMappingProfile),
+            typeof(ApiContainerMappingProfile),
+            typeof(ApiTypeMappingProfile));
+        
+        return services;
+    }
+    
+    public static IServiceCollection AddServices(this IServiceCollection services)
+    {
+        services.AddScoped<IContainerService, ContainerService>();
+        services.AddScoped<ITypeService, TypeService>();
+        
+        return services;
+    }
+    
+    public static IServiceCollection AddRepositories(this IServiceCollection services)
+    {
+        services.AddScoped<IContainerRepository, ContainerRepository>();
+        services.AddScoped<ITypeRepository, TypeRepository>();
+        
+        return services;
+    }
+    
+    
+    public static IServiceCollection AddVersioning(this IServiceCollection services)
+    {
+        services.AddApiVersioning(options =>
+        {
+            options.DefaultApiVersion = new ApiVersion(1);
+            options.ReportApiVersions = true;
+            options.AssumeDefaultVersionWhenUnspecified = true;
+            options.ApiVersionReader = ApiVersionReader.Combine(
+                new UrlSegmentApiVersionReader(),
+                new HeaderApiVersionReader("X-Api-Version"));
+        }).AddApiExplorer(options =>
+        {
+            options.GroupNameFormat = "'v'V";
+            options.SubstituteApiVersionInUrl = true;
+        });
+
+        return services;
+    }
+    
+    public static IServiceCollection AddExceptionHandling(this IServiceCollection services)
+    {
+        services.AddTransient<ExceptionHandlerMiddleware>();
+        
+        return services;
+    }
+    
+    public static IServiceCollection ConfigureMassTransit(this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        throw new NotImplementedException();
+        // var rmqSettings = configuration.GetSection("RmqSettings").Get<RmqSettings>();
+        //
+        // services.AddMassTransit(options =>
+        // {
+        //     options.UsingRabbitMq((context, cfg) =>
+        //         cfg.Host(rmqSettings.Host, rmqSettings.Vhost, h =>
+        //         {
+        //             h.Username(rmqSettings.Username);
+        //             h.Password(rmqSettings.Password);
+        //         }));
+        // });
+        //
+        // // Producers
+        // services.AddScoped<ICreateOrderProducer, CreateOrderProducer>();
+        // services.AddScoped<IDeleteOrderProducer, DeleteOrderProducer>();
+        // services.AddScoped<IUpdateOrderProducer, UpdateOrderProducer>();
+        //
+        // return services;
+    }
+}
