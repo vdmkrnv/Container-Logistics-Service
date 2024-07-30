@@ -1,8 +1,6 @@
-using WebApi.Models.ApiModels;
+namespace WebApi.Models.ApiModels;
 
-namespace WebApi.Models.Response;
-
-public class UpdateOrderResponse
+public class OrderApiModel
 {
     public Guid Id { get; set; }
     

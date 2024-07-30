@@ -37,7 +37,8 @@ public class ExceptionHandlerMiddleware(ILogger<ExceptionHandlerMiddleware> logg
         {
             logger.LogError(e, e.Message);
             
-            await InterceptResponseAsync(context,
+            await InterceptResponseAsync(
+                context,
                 "Unknown server error", 
                 "Please retry query", 
                 StatusCodes.Status500InternalServerError);

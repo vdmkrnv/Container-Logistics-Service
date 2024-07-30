@@ -1,5 +1,3 @@
-using System.ComponentModel;
-
 namespace BusModels;
 
 public class OrderDeleted

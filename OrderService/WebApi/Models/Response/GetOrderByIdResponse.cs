@@ -1,4 +1,4 @@
-using Services.Models.OtherModels;
+using WebApi.Models.ApiModels;
 
 namespace WebApi.Models.Response;
 
@@ -18,7 +18,7 @@ public class GetOrderByIdResponse
     
     public double Price { get; set; }
     
-    public ICollection<ContainerModel> Containers { get; set; }
+    public ICollection<ContainerApiModel> Containers { get; set; }
     
-    public ICollection<DownTimeModel> DownTimes { get; set; }
+    public ICollection<DownTimeApiModel> DownTimes { get; set; }
 }

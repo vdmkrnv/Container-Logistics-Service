@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Services.Models.Request;
 using Services.Services.Interfaces;
 using WebApi.Models;
+using WebApi.Models.ApiModels;
 using WebApi.Models.Request;
 using WebApi.Models.Response;
 
@@ -27,7 +28,7 @@ public class OrderController(
         var orders = await orderService.GetAll(
             new GetAllOrdersModel { Page = page, PageSize = pageSize });
         var response = new CommonResponse<GetAllOrdersResponse>
-            { Data = new GetAllOrdersResponse { Orders = orders } };
+            { Data = new GetAllOrdersResponse { Orders = mapper.Map<List<OrderApiModel>>(orders) } };
 
         return response;
     }
@@ -49,7 +50,7 @@ public class OrderController(
     {
         var orders = await orderService.GetByClientId(mapper.Map<GetOrdersByClientIdModel>(request));
         var response = new CommonResponse<GetOrdersByClientIdResponse>
-            { Data = new GetOrdersByClientIdResponse { Orders = orders } };
+            { Data = new GetOrdersByClientIdResponse { Orders = mapper.Map<List<OrderApiModel>>(orders) } };
         
         return response;
     }

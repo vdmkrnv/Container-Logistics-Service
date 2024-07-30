@@ -1,8 +1,8 @@
-using Services.Models.Response;
+using WebApi.Models.ApiModels;
 
 namespace WebApi.Models.Response;
 
 public class GetOrdersByClientIdResponse
 {
-    public List<OrderModel> Orders { get; set; }
+    public List<OrderApiModel> Orders { get; set; }
 }
