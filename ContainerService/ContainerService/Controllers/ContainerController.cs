@@ -5,6 +5,7 @@ using Services.Models.Request.Container;
 using Services.Services.Interfaces;
 using WebApi.Models;
 using WebApi.Models.Request.Container;
+using WebApi.Models.Response;
 using WebApi.Models.Response.Container;
 
 namespace WebApi.Controllers;
@@ -17,7 +18,8 @@ public class ContainerController(
     IMapper mapper) : ControllerBase
 {
     [HttpPost]
-    public async Task<CommonResponse<CreateContainerResponse>> Create(CreateContainerRequest request)
+    public async Task<ActionResult<CommonResponse<CreateContainerResponse>>> Create(
+        CreateContainerRequest request)
     {
         var id = await containerService.Add(mapper.Map<CreateContainerModel>(request));
         var response = new CommonResponse<CreateContainerResponse> 
@@ -28,7 +30,8 @@ public class ContainerController(
 
     
     [HttpPut]
-    public async Task<CommonResponse<UpdateContainerResponse>> Update(UpdateContainerRequest request)
+    public async Task<ActionResult<CommonResponse<UpdateContainerResponse>>> Update(
+        UpdateContainerRequest request)
     {
         var container = await containerService.Update(mapper.Map<UpdateContainerModel>(request));
         var response = new CommonResponse<UpdateContainerResponse> 
@@ -39,7 +42,8 @@ public class ContainerController(
 
 
     [HttpDelete("{id}")]
-    public async Task<CommonResponse<DeleteContainerResponse>> Delete([FromRoute] DeleteContainerRequest request)
+    public async Task<ActionResult<CommonResponse<DeleteContainerResponse>>> Delete(
+        [FromRoute] DeleteContainerRequest request)
     {
         var container = await containerService.Delete(mapper.Map<DeleteContainerModel>(request));
         var response = new CommonResponse<DeleteContainerResponse> 
@@ -50,7 +54,7 @@ public class ContainerController(
 
 
     [HttpGet("{id}")]
-    public async Task<CommonResponse<GetContainerByIdResponse>> GetById([FromRoute] GetContainerByIdRequest request)
+    public async Task<ActionResult<CommonResponse<GetContainerByIdResponse>>> GetById([FromRoute] GetContainerByIdRequest request)
     {
         var container = await containerService.GetById(mapper.Map<GetContainerByIdModel>(request));
         var response = new CommonResponse<GetContainerByIdResponse>
@@ -61,7 +65,8 @@ public class ContainerController(
     
     
     [HttpGet("iso-numbers/{isoNumber}")]
-    public async Task<CommonResponse<GetContainerByIsoResponse>> GetByIso(GetContainerByIsoRequest request)
+    public async Task<ActionResult<CommonResponse<GetContainerByIsoResponse>>> GetByIso(
+        GetContainerByIsoRequest request)
     {
         var container = await containerService.GetByIso(mapper.Map<GetContainerByIsoModel>(request));
         var response = new CommonResponse<GetContainerByIsoResponse>
@@ -72,12 +77,17 @@ public class ContainerController(
     
     
     [HttpGet]
-    public async Task<CommonResponse<GetContainersByTypeIdResponse>> GetByTypeId(GetContainersByTypeIdRequest request)
+    public async Task<ActionResult<CommonResponse<GetContainersByTypeIdResponse>>> GetByTypeId(
+        GetContainersByTypeIdRequest request)
     {
+        // todo: pagination from query parameters
         var containers = await containerService
             .GetByTypeId(mapper.Map<GetContainersByTypeIdModel>(request));
         var response = new CommonResponse<GetContainersByTypeIdResponse>
-            { Data = mapper.Map<GetContainersByTypeIdResponse>(containers) };
+        {
+            Data = new GetContainersByTypeIdResponse
+                { Containers = mapper.Map<List<ContainerApiModel>>(containers) }
+        };
         
         return response;
     }

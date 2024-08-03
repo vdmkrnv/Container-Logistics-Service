@@ -13,6 +13,7 @@ public class ServiceContainerMappingProfile : Profile
         CreateMap<CreateContainerModel, Container>()
             .ForMember(d => d.IsoNumber, map => map.MapFrom(c => c.IsoNumber))
             .ForMember(d => d.TypeId, map => map.MapFrom(c => c.TypeId))
+            .ForMember(d => d.OrderId, map => map.Ignore())
             .ForMember(d => d.Id, map => map.Ignore())
             .ForMember(d => d.Type, map => map.Ignore())
             .ForMember(d => d.IsEngaged, map => map.Ignore())
@@ -22,6 +23,7 @@ public class ServiceContainerMappingProfile : Profile
 
         CreateMap<DeleteContainerModel, Container>()
             .ForMember(d => d.Id, map => map.MapFrom(c => c.Id))
+            .ForMember(d => d.OrderId, map => map.Ignore())
             .ForMember(d => d.IsoNumber, map => map.Ignore())
             .ForMember(d => d.TypeId, map => map.Ignore())
             .ForMember(d => d.Type, map => map.Ignore())
@@ -32,6 +34,7 @@ public class ServiceContainerMappingProfile : Profile
 
         CreateMap<GetContainerByIdModel, Container>()
             .ForMember(d => d.Id, map => map.MapFrom(c => c.Id))
+            .ForMember(d => d.OrderId, map => map.Ignore())
             .ForMember(d => d.IsoNumber, map => map.Ignore())
             .ForMember(d => d.TypeId, map => map.Ignore())
             .ForMember(d => d.Type, map => map.Ignore())
@@ -44,20 +47,11 @@ public class ServiceContainerMappingProfile : Profile
             .ForMember(d => d.IsoNumber, map => map.MapFrom(c => c.IsoNumber))
             .ForMember(d => d.TypeId, map => map.Ignore())
             .ForMember(d => d.Id, map => map.Ignore())
+            .ForMember(d => d.OrderId, map => map.Ignore())
             .ForMember(d => d.Type, map => map.Ignore())
             .ForMember(d => d.IsEngaged, map => map.Ignore())
             .ForMember(d => d.EngagedUntil, map => map.Ignore())
             .ForMember(d => d.IsDeleted, map => map.Ignore());;
-
-
-        CreateMap<GetContainersByTypeIdModel, Container>()
-            .ForMember(d => d.TypeId, map => map.MapFrom(c => c.TypeId))
-            .ForMember(d => d.Id, map => map.Ignore())
-            .ForMember(d => d.IsoNumber, map => map.Ignore())
-            .ForMember(d => d.Type, map => map.Ignore())
-            .ForMember(d => d.IsEngaged, map => map.Ignore())
-            .ForMember(d => d.EngagedUntil, map => map.Ignore())
-            .ForMember(d => d.IsDeleted, map => map.Ignore());
 
 
         CreateMap<UpdateContainerModel, Container>()
@@ -66,6 +60,7 @@ public class ServiceContainerMappingProfile : Profile
             .ForMember(d => d.TypeId, map => map.MapFrom(c => c.TypeId))
             .ForMember(d => d.IsEngaged, map => map.MapFrom(c => c.IsEngaged))
             .ForMember(d => d.EngagedUntil, map => map.MapFrom(c => c.EngagedUntil))
+            .ForMember(d => d.OrderId, map => map.Ignore())
             .ForMember(d => d.Type, map => map.Ignore())
             .ForMember(d => d.IsDeleted, map => map.Ignore());
 
@@ -74,6 +69,7 @@ public class ServiceContainerMappingProfile : Profile
         // Domain models -> Response models
         CreateMap<Container, ContainerModel>()
             .ForMember(d => d.Id, map => map.MapFrom(c => c.Id))
+            .ForMember(d => d.OrderId, map => map.MapFrom(c => c.OrderId))
             .ForMember(d => d.IsoNumber, map => map.MapFrom(c => c.IsoNumber))
             .ForMember(d => d.TypeId, map => map.MapFrom(c => c.TypeId))
             .ForMember(d => d.IsEngaged, map => map.MapFrom(c => c.IsEngaged))

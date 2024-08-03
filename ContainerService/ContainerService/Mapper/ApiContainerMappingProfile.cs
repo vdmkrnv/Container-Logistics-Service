@@ -85,6 +85,7 @@ public class ApiContainerMappingProfile : Profile
         
         CreateMap<ContainerModel, ContainerApiModel>()
             .ForMember(d => d.Id, map => map.MapFrom(c => c.Id))
+            .ForMember(d => d.OrderId, map => map.MapFrom(c => c.OrderId))
             .ForMember(d => d.TypeId, map => map.MapFrom(c => c.TypeId))
             .ForMember(d => d.IsoNumber, map => map.MapFrom(c => c.IsoNumber))
             .ForMember(d => d.IsEngaged, map => map.MapFrom(c => c.IsEngaged))

@@ -48,6 +48,28 @@ public class ContainerRepository(DbContext context) : IContainerRepository
         };
     }
 
+    public async Task UpdateEngagedStatusAsync(
+        List<Container> containers, 
+        Guid orderId,
+        bool isEngaged,
+        DateTime engagedUntil)
+    {
+        var ids = containers.Select(x => x.Id);
+
+        await context.Set<Container>()
+            .Where(x => !ids.Contains(x.Id) && !x.IsDeleted && x.OrderId == orderId)
+            .ExecuteUpdateAsync(s => s.SetProperty(p => p.IsEngaged, false));
+        
+        await context.Set<Container>()
+            .Where(x => ids.Contains(x.Id))
+            .ExecuteUpdateAsync(s => s
+                .SetProperty(p => p.IsEngaged, isEngaged)
+                .SetProperty(p => p.EngagedUntil, engagedUntil)
+                .SetProperty(p => p.OrderId, orderId));
+        
+        await  context.SaveChangesAsync();
+    }
+
     public async Task<Container> DeleteAsync(Container container)
     {
         var con = await context.Set<Container>()
@@ -99,10 +121,12 @@ public class ContainerRepository(DbContext context) : IContainerRepository
     
     public async Task<List<Container>> GetByTypeIdAsync(int page, int pageSize, int typeId)
     {
-        return await context.Set<Container>()
+        var containers = await context.Set<Container>()
             .Where(x => x.TypeId == typeId && !x.IsDeleted)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
+
+        return containers;
     }
 }

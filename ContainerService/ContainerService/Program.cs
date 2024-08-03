@@ -23,7 +23,7 @@ namespace WebApi
 			services.AddServices();
 			services.AddVersioning();
 			services.AddExceptionHandling();
-			// services.ConfigureMassTransit(builder.Configuration);
+			services.ConfigureMassTransit(builder.Configuration);
 			
 
 			var app = builder.Build();

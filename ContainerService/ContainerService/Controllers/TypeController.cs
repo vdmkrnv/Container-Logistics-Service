@@ -18,7 +18,7 @@ public class TypeController(
     IMapper mapper) : ControllerBase
 {
     [HttpPost]
-    public async Task<CommonResponse<CreateTypeResponse>> Create(CreateTypeRequest request)
+    public async Task<ActionResult<CommonResponse<CreateTypeResponse>>> Create(CreateTypeRequest request)
     {
         var id = await typeService.Add(mapper.Map<CreateTypeModel>(request));
         var response = new CommonResponse<CreateTypeResponse>
@@ -29,7 +29,7 @@ public class TypeController(
     
     
     [HttpPut]
-    public async Task<CommonResponse<UpdateTypeResponse>> Update(UpdateTypeRequest request)
+    public async Task<ActionResult<CommonResponse<UpdateTypeResponse>>> Update(UpdateTypeRequest request)
     {
         var type = await typeService.Update(mapper.Map<UpdateTypeModel>(request));
         var response = new CommonResponse<UpdateTypeResponse>
@@ -40,7 +40,7 @@ public class TypeController(
     
     
     [HttpDelete("{id}")]
-    public async Task<CommonResponse<DeleteTypeResponse>> Delete([FromRoute] DeleteTypeRequest request)
+    public async Task<ActionResult<CommonResponse<DeleteTypeResponse>>> Delete([FromRoute] DeleteTypeRequest request)
     {
         var type = await typeService.Delete(mapper.Map<DeleteTypeModel>(request));
         var response = new CommonResponse<DeleteTypeResponse>
@@ -51,7 +51,7 @@ public class TypeController(
     
     
     [HttpGet("{id}")]
-    public async Task<CommonResponse<GetTypeByIdResponse>> GetById([FromRoute]GetTypeByIdRequest request)
+    public async Task<ActionResult<CommonResponse<GetTypeByIdResponse>>> GetById([FromRoute]GetTypeByIdRequest request)
     {
         var type = await typeService.GetById(mapper.Map<GetTypeByIdModel>(request));
         var response = new CommonResponse<GetTypeByIdResponse>
@@ -62,11 +62,11 @@ public class TypeController(
 
 
     [HttpGet]
-    public async Task<CommonResponse<GetAllTypesResponse>> GetAll([FromQuery] GetAllTypesRequest request)
+    public async Task<ActionResult<CommonResponse<GetAllTypesResponse>>> GetAll([FromQuery] GetAllTypesRequest request)
     {
         var types = await typeService.GetAll(mapper.Map<GetAllTypesModel>(request));
         var response = new CommonResponse<GetAllTypesResponse>
-            { Data = mapper.Map<GetAllTypesResponse>(types) };
+            { Data = new GetAllTypesResponse{ Types = mapper.Map<List<TypeApiModel>>(types)} };
         
         return response;
     }

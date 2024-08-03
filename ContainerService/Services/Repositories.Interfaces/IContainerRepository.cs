@@ -8,6 +8,12 @@ public interface IContainerRepository
 
     Task<Container> UpdateAsync(Container container);
 
+    Task UpdateEngagedStatusAsync(
+        List<Container> containers, 
+        Guid orderId, 
+        bool isEngaged, 
+        DateTime engagedUntil);
+
     Task<Container> DeleteAsync(Container container);
 
     Task<Container> GetByIdAsync(Container container);

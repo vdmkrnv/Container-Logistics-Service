@@ -1,7 +1,6 @@
-
 namespace BusModels;
 
-public class OrderCreated
+public class OrderUpdatedMessage
 {
     public List<Guid> ContainerIds { get; set; }
     

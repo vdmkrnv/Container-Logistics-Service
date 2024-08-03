@@ -106,7 +106,7 @@ public class ContainerService(
 
     public async Task<List<ContainerModel>> GetByTypeId(GetContainersByTypeIdModel model)
     {
-        var validationResult = await getContainersByTypeIdValidator.ValidateAsync(model);
+        var validationResult = await getContainersByTypeIdValidator.ValidateAsync(instance: model);
         if (!validationResult.IsValid)
             throw new ServiceException
             {   
@@ -116,8 +116,11 @@ public class ContainerService(
             };
         
         var containers = await containerRepository
-            .GetByTypeIdAsync(model.TypeId, model.Page, model.PageSize);
-        var result = mapper.Map<List<ContainerModel>>(containers);
+            .GetByTypeIdAsync(
+                page: model.Page, 
+                pageSize: model.PageSize, 
+                typeId: model.TypeId);
+        var result = mapper.Map<List<ContainerModel>>(source: containers);
         
         return result;
     }

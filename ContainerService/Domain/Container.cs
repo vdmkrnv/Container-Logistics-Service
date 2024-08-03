@@ -7,6 +7,8 @@ public class Container
 {
 	public Guid Id { get; set; }
 	
+	public Guid OrderId { get; set; }
+	
 	/// <summary>
 	/// Номер ISO
 	/// </summary>
