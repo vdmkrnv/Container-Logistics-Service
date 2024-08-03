@@ -40,7 +40,7 @@ public class OrderService(
             };
 
         var id = await orderRepository.AddAsync(mapper.Map<Order>(model));
-        var message = new OrderCreated
+        var message = new OrderCreatedMessage
         {
             ContainerIds = model.Containers.Select(c => c.Id).ToList(),
             OrderId = id,
@@ -63,7 +63,7 @@ public class OrderService(
             };
         
         var order = await orderRepository.UpdateAsync(mapper.Map<Order>(model));
-        var message = new OrderUpdated
+        var message = new OrderUpdatedMessage
         {
             ContainerIds = order.Containers.Select(c => c.Id).ToList(),
             OrderId = order.Id,
@@ -87,8 +87,11 @@ public class OrderService(
             };
         
         var order = await orderRepository.DeleteAsync(mapper.Map<Order>(model));
-        await deleteOrderProducer.NotifyOrderDeleted(new OrderDeleted
-            { ContainerIds = order.Containers.Select(c => c.Id).ToList() });
+        await deleteOrderProducer.NotifyOrderDeleted(new OrderDeletedMessage
+        {
+            ContainerIds = order.Containers.Select(c => c.Id).ToList(),
+            OrderId = order.Id
+        });
         
         var result = mapper.Map<OrderModel>(order);
         return result;

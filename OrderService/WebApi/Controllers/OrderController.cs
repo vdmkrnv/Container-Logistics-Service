@@ -21,7 +21,7 @@ public class OrderController(
     IOrderService orderService) : ControllerBase
 {
     [HttpGet]
-    public async Task<CommonResponse<GetAllOrdersResponse>> GetAll(
+    public async Task<ActionResult<CommonResponse<GetAllOrdersResponse>>> GetAll(
         [FromQuery] int page,
         [FromQuery] int pageSize)
     {
@@ -34,7 +34,7 @@ public class OrderController(
     }
     
     [HttpGet("{id:guid}")]
-    public async Task<CommonResponse<GetOrderByIdResponse>> GetById(
+    public async Task<ActionResult<CommonResponse<GetOrderByIdResponse>>> GetById(
         [FromRoute] GetOrderByIdRequest request)
     {
         var order = await orderService.GetById(mapper.Map<GetOrderByIdModel>(request));
@@ -45,7 +45,7 @@ public class OrderController(
     }
     
     [HttpGet("clients/{clientId:guid}")]
-    public async Task<CommonResponse<GetOrdersByClientIdResponse>> GetByClientId(
+    public async Task<ActionResult<CommonResponse<GetOrdersByClientIdResponse>>> GetByClientId(
         [FromRoute] GetOrdersByClientIdRequest request)
     {
         var orders = await orderService.GetByClientId(mapper.Map<GetOrdersByClientIdModel>(request));
@@ -56,18 +56,21 @@ public class OrderController(
     }
 
     [HttpPost]
-    public async Task<CommonResponse<CreateOrderResponse>> Create(
+    public async Task<ActionResult<CommonResponse<CreateOrderResponse>>> Create(
         CreateOrderRequest request)
     {
         var id = await orderService.Create(mapper.Map<CreateOrderModel>(request));
-        var response = new CommonResponse<CreateOrderResponse>
-            { Data = new CreateOrderResponse { Id = id } };
+        var response = new CreatedResult(
+            nameof(Create),
+            new CommonResponse<CreateOrderResponse>
+                { Data = new CreateOrderResponse { Id = id } }
+        );
         
         return response;
     }
 
     [HttpPut]
-    public async Task<CommonResponse<UpdateOrderResponse>> Update(
+    public async Task<ActionResult<CommonResponse<UpdateOrderResponse>>> Update(
         UpdateOrderRequest request)
     {
         var order = await orderService.Update(mapper.Map<UpdateOrderModel>(request));
@@ -78,7 +81,7 @@ public class OrderController(
     }
 
     [HttpDelete("{id:guid}")]
-    public async Task<CommonResponse<DeleteOrderResponse>> Delete(
+    public async Task<ActionResult<CommonResponse<DeleteOrderResponse>>> Delete(
         [FromRoute] DeleteOrderRequest request)
     {
         var order = await orderService.Delete(mapper.Map<DeleteOrderModel>(request));

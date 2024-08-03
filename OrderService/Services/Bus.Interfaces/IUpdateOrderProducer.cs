@@ -4,5 +4,5 @@ namespace Services.Bus.Interfaces;
 
 public interface IUpdateOrderProducer
 {
-    Task NotifyOrderUpdated(OrderUpdated message);
+    Task NotifyOrderUpdated(OrderUpdatedMessage message);
 }

@@ -10,7 +10,7 @@ public class UpdateOrderProducer(
     ILogger<UpdateOrderProducer> logger) 
     : IUpdateOrderProducer
 {
-    public async Task NotifyOrderUpdated(OrderUpdated message)
+    public async Task NotifyOrderUpdated(OrderUpdatedMessage message)
     {
         logger.LogInformation("Order updated with id: {id}", message.OrderId);
         await publishEndpoint.Publish(message);

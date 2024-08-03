@@ -4,5 +4,5 @@ namespace Services.Bus.Interfaces;
 
 public interface ICreateOrderProducer
 {
-    Task NotifyOrderCreated(OrderCreated message);
+    Task NotifyOrderCreated(OrderCreatedMessage message);
 }

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Domain;
 using Exceptions.Infrastructure;
 using Microsoft.AspNetCore.Http;
@@ -15,7 +16,7 @@ public class OrderRepository(DbContext context) : IOrderRepository
         if (result != null)
             return result;
         
-        throw new InfrastructureException()
+        throw new InfrastructureException
         {
             Title = "Order not found",
             Message = $"Order with this id not found",
@@ -52,16 +53,14 @@ public class OrderRepository(DbContext context) : IOrderRepository
 
     public async Task<Order> DeleteAsync(Order order)
     {
-        // TODO: Single responsibility??
         var result = await context.Set<Order>()
-            .Include(x => x.Containers)
             .Include(x => x.DownTimes)
+            .Include(x => x.Containers)
             .FirstOrDefaultAsync(x => x.Id == order.Id && x.IsDeleted == false);
-        
+
         if (result != null)
         {
-            result.IsDeleted = true;
-            await context.SaveChangesAsync();
+            await context.Set<Order>().ExecuteUpdateAsync(s => s.SetProperty(p => p.IsDeleted, true));
             await context.Set<DownTime>().Where(x => x.OrderId == order.Id)
                 .ExecuteUpdateAsync(s => s.SetProperty(p => p.IsDeleted, true));
             await context.Set<Container>().Where(x => x.OrderId == order.Id).ExecuteDeleteAsync();
@@ -69,7 +68,7 @@ public class OrderRepository(DbContext context) : IOrderRepository
             return result;
         }
 
-        throw new InfrastructureException()
+        throw new InfrastructureException
         {
             Title = "Order not found",
             Message = $"Order with this id not found",
@@ -79,23 +78,23 @@ public class OrderRepository(DbContext context) : IOrderRepository
 
     public async Task<Order> UpdateAsync(Order order)
     {
-        // TODO: Single responsibility??
         var result = await context.Set<Order>()
+            .Include(x => x.DownTimes)
+            .Include(x => x.Containers)
             .FirstOrDefaultAsync(x => x.Id == order.Id && x.IsDeleted == false);
+        
         if (result != null)
         {
             order.ClientId = result.Id;
             context.Entry(result).CurrentValues.SetValues(order);
-
+            
             foreach (var c in order.Containers) 
                 c.OrderId = order.Id;
-
             foreach (var d in order.DownTimes) 
                 d.OrderId = order.Id;
             
             context.Set<Container>().RemoveRange(result.Containers);
             await context.Set<Container>().AddRangeAsync(order.Containers);
-            
             context.Set<DownTime>().RemoveRange(result.DownTimes);
             await context.Set<DownTime>().AddRangeAsync(order.DownTimes);
             
@@ -103,7 +102,7 @@ public class OrderRepository(DbContext context) : IOrderRepository
             return result;
         }
         
-        throw new InfrastructureException()
+        throw new InfrastructureException
         {
             Title = "Order not found",
             Message = $"Order with this id not found",

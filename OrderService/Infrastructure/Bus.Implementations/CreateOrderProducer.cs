@@ -10,7 +10,7 @@ public class CreateOrderProducer(
     ILogger<CreateOrderProducer> logger) 
     : ICreateOrderProducer
 {
-    public async Task NotifyOrderCreated(OrderCreated message)
+    public async Task NotifyOrderCreated(OrderCreatedMessage message)
     {
         logger.LogInformation("Order created with id: {containers}", message.OrderId);
         await publishEndpoint.Publish(message);

@@ -10,7 +10,7 @@ public class DeleteOrderProducer(
     ILogger<DeleteOrderProducer> logger) 
     : IDeleteOrderProducer
 {
-    public async Task NotifyOrderDeleted(OrderDeleted message)
+    public async Task NotifyOrderDeleted(OrderDeletedMessage message)
     {
         logger.LogInformation("Order deleted with container ids: {containers}", string.Join(", ", message.ContainerIds));
         await publishEndpoint.Publish(message);
