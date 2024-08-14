@@ -23,7 +23,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: identity_db
+      POSTGRES_DB: order_db
       PGPORT: 5434
     ports:
       - "5434:5434"

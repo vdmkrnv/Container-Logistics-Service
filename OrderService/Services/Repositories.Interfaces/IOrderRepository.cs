@@ -9,6 +9,8 @@ public interface IOrderRepository
 {
     Task<Order> GetByIdAsync(Order order);
 
+    Task<List<Order>> GetByPeriodAsync(DateTime end, int days);
+
     Task<List<Order>> GetAllAsync(int page, int pageSize);
 
     Task<List<Order>> GetByClientIdAsync(Order order);

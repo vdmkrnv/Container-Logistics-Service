@@ -26,6 +26,7 @@ public class OrderService(
     IValidator<DeleteOrderModel> deleteOrderValidator,
     IValidator<GetOrderByIdModel> getOrderByIdValidator,
     IValidator<GetOrdersByClientIdModel> getOrdersByClientIdValidator,
+    IValidator<GetOrdersInPeriodModel> getOrdersInPeriodValidator,
     IValidator<GetAllOrdersModel> getAllOrdersValidator) : IOrderService
 {
     public async Task<Guid> Create(CreateOrderModel model)
@@ -129,6 +130,22 @@ public class OrderService(
         return result;
     }
     
+    public async Task<List<OrderFullModel>> GetByPeriod(GetOrdersInPeriodModel model)
+    {
+        var validationResult = await getOrdersInPeriodValidator.ValidateAsync(model);
+        if (!validationResult.IsValid)
+            throw new ServiceException
+            {
+                Title = "Model invalid",
+                Message = "Model validation failed",
+                StatusCode = StatusCodes.Status400BadRequest
+            };
+        
+        var orders = await orderRepository.GetByPeriodAsync(model.End.ToUniversalTime(), model.Period);
+        var result = mapper.Map<List<OrderFullModel>>(orders);
+        return result;
+    }
+    
     public async Task<List<OrderModel>> GetAll(GetAllOrdersModel model)
     {
         var validationResult = await getAllOrdersValidator.ValidateAsync(model);
@@ -144,4 +161,5 @@ public class OrderService(
         var result = mapper.Map<List<OrderModel>>(orders);
         return result;
     }
+    
 }

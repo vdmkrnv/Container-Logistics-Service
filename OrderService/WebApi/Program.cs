@@ -23,6 +23,7 @@ public class Program
         services.AddVersioning();
         services.AddExceptionHandling();
         services.ConfigureMassTransit(builder.Configuration);
+        services.AddTelemetry();
         
         var app = builder.Build();
 
@@ -32,6 +33,8 @@ public class Program
         app.UseSwaggerUI();
 
         app.UseHttpsRedirection();
+
+        app.MapPrometheusScrapingEndpoint();
 
         app.MapControllers();
         app.Run();

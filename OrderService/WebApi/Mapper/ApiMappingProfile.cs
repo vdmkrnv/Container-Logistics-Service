@@ -50,6 +50,10 @@ public class ApiMappingProfile : Profile
         
         CreateMap<GetOrdersByClientIdRequest, GetOrdersByClientIdModel>()
             .ForMember(d => d.ClientId, map => map.MapFrom(c => c.ClientId));
+        
+        CreateMap<GetOrdersInPeriodRequest, GetOrdersInPeriodModel>()
+            .ForMember(d => d.End, map => map.MapFrom(c => c.End))
+            .ForMember(d => d.Period, map => map.MapFrom(c => c.Period));
 
         
         CreateMap<OrderApiModel, OrderModel>()
@@ -122,6 +126,20 @@ public class ApiMappingProfile : Profile
             .ForMember(d => d.Price, map => map.MapFrom(c => c.Price))
             .ForMember(d => d.Containers, map => map.MapFrom(c => c.Containers))
             .ForMember(d => d.DownTimes, map => map.MapFrom(c => c.DownTimes));
+        
+        
+        CreateMap<OrderFullModel, OrderApiFullModel>()
+            .ForMember(d => d.Id, map => map.MapFrom(c => c.Id))
+            .ForMember(d => d.ClientId, map => map.MapFrom(c => c.ClientId))
+            .ForMember(d => d.DateStart, map => map.MapFrom(c => c.DateStart))
+            .ForMember(d => d.DateEnd, map => map.MapFrom(c => c.DateEnd))
+            .ForMember(d => d.HubStartId, map => map.MapFrom(c => c.HubStartId))
+            .ForMember(d => d.HubEndId, map => map.MapFrom(c => c.HubEndId))
+            .ForMember(d => d.Price, map => map.MapFrom(c => c.Price))
+            .ForMember(d => d.Costs, map => map.MapFrom(c => c.Costs))
+            .ForMember(d => d.Containers, map => map.MapFrom(c => c.Containers))
+            .ForMember(d => d.DownTimes, map => map.MapFrom(c => c.DownTimes))
+            .ForMember(d => d.IsDeleted, map => map.MapFrom(c => c.IsDeleted));
 
 
         CreateMap<ContainerModel, ContainerApiModel>()

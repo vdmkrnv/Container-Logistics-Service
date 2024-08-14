@@ -22,13 +22,15 @@ public class OrderController(
 {
     [HttpGet]
     public async Task<ActionResult<CommonResponse<GetAllOrdersResponse>>> GetAll(
-        [FromQuery] int page,
-        [FromQuery] int pageSize)
+        [FromQuery] GetAllOrdersRequest request)
     {
         var orders = await orderService.GetAll(
-            new GetAllOrdersModel { Page = page, PageSize = pageSize });
+            new GetAllOrdersModel { Page = request.Page, PageSize = request.PageSize });
         var response = new CommonResponse<GetAllOrdersResponse>
-            { Data = new GetAllOrdersResponse { Orders = mapper.Map<List<OrderApiModel>>(orders) } };
+        {
+            Data = new GetAllOrdersResponse
+                { Orders = mapper.Map<List<OrderApiModel>>(orders) }
+        };
 
         return response;
     }
@@ -51,6 +53,21 @@ public class OrderController(
         var orders = await orderService.GetByClientId(mapper.Map<GetOrdersByClientIdModel>(request));
         var response = new CommonResponse<GetOrdersByClientIdResponse>
             { Data = new GetOrdersByClientIdResponse { Orders = mapper.Map<List<OrderApiModel>>(orders) } };
+        
+        return response;
+    }
+    
+    [HttpGet("periods")]
+    public async Task<ActionResult<CommonResponse<GetOrdersInPeriodResponse>>> GetByPeriod(
+        [FromQuery] GetOrdersInPeriodRequest request)
+    {
+        var orders = await orderService.GetByPeriod(
+            mapper.Map<GetOrdersInPeriodModel>(request));
+        var response = new CommonResponse<GetOrdersInPeriodResponse>
+        {
+            Data = new GetOrdersInPeriodResponse
+                { Orders = mapper.Map<List<OrderApiFullModel>>(orders) }
+        };
         
         return response;
     }

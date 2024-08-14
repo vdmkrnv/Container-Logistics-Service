@@ -34,6 +34,16 @@ public class OrderRepository(DbContext context) : IOrderRepository
             .ToListAsync();
     }
 
+    public async Task<List<Order>> GetByPeriodAsync(DateTime end, int days)
+    {
+        var result = await context.Set<Order>()
+            .Where(x => x.DateEnd < end  
+                        && x.DateEnd > end.Subtract(new TimeSpan(days, 0, 0, 0))
+                        && !x.IsDeleted).ToListAsync();
+        
+        return result;
+    }
+
     public async Task<List<Order>> GetByClientIdAsync(Order order)
     {
         var result = await context.Set<Order>()
@@ -44,11 +54,27 @@ public class OrderRepository(DbContext context) : IOrderRepository
     
     public async Task<Guid> AddAsync(Order order)
     {
-        order.Id = Guid.NewGuid();
-        await context.Set<Order>().AddAsync(order);
-        await context.SaveChangesAsync();
+        var container = await context.Set<Container>()
+            .Where(x => order.Containers
+                .Select(x => x.Id)
+                .Contains(x.Id))
+            .FirstOrDefaultAsync();
+        
+        if (container == null)
+        {
+            order.Id = Guid.NewGuid();
+            await context.Set<Order>().AddAsync(order);
+            await context.SaveChangesAsync();
 
-        return order.Id;
+            return order.Id;
+        }
+
+        throw new InfrastructureException
+        {
+            Title = "Containers already used",
+            Message = $"Container with this ids is engaged",
+            StatusCode = StatusCodes.Status404NotFound
+        };
     }
 
     public async Task<Order> DeleteAsync(Order order)
@@ -60,7 +86,8 @@ public class OrderRepository(DbContext context) : IOrderRepository
 
         if (result != null)
         {
-            await context.Set<Order>().ExecuteUpdateAsync(s => s.SetProperty(p => p.IsDeleted, true));
+            await context.Set<Order>().ExecuteUpdateAsync(
+                s => s.SetProperty(p => p.IsDeleted, true));
             await context.Set<DownTime>().Where(x => x.OrderId == order.Id)
                 .ExecuteUpdateAsync(s => s.SetProperty(p => p.IsDeleted, true));
             await context.Set<Container>().Where(x => x.OrderId == order.Id).ExecuteDeleteAsync();
@@ -87,13 +114,12 @@ public class OrderRepository(DbContext context) : IOrderRepository
         {
             order.ClientId = result.Id;
             context.Entry(result).CurrentValues.SetValues(order);
-            
-            foreach (var c in order.Containers) 
-                c.OrderId = order.Id;
-            foreach (var d in order.DownTimes) 
-                d.OrderId = order.Id;
-            
+            ChangeOrderIdInCollection(order);
+
             context.Set<Container>().RemoveRange(result.Containers);
+            await context.SaveChangesAsync();
+            
+            await CheckContainersExistAndThrow(order.Containers);
             await context.Set<Container>().AddRangeAsync(order.Containers);
             context.Set<DownTime>().RemoveRange(result.DownTimes);
             await context.Set<DownTime>().AddRangeAsync(order.DownTimes);
@@ -108,5 +134,30 @@ public class OrderRepository(DbContext context) : IOrderRepository
             Message = $"Order with this id not found",
             StatusCode = StatusCodes.Status404NotFound
         };
+    }
+
+    private void ChangeOrderIdInCollection(Order order)
+    {
+        foreach (var c in order.Containers) 
+            c.OrderId = order.Id;
+        foreach (var d in order.DownTimes) 
+            d.OrderId = order.Id;
+    }
+
+    private async Task CheckContainersExistAndThrow(ICollection<Container> containers)
+    {
+        var container = await context.Set<Container>()
+            .Where(x => containers
+                .Select(x => x.Id)
+                .Contains(x.Id))
+            .FirstOrDefaultAsync();
+
+        if (container != null)
+            throw new InfrastructureException
+            {
+                Title = "Containers already used",
+                Message = $"Container with this ids is engaged",
+                StatusCode = StatusCodes.Status404NotFound
+            };
     }
 }

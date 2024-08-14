@@ -18,5 +18,7 @@ public interface IOrderService
 
     Task<List<OrderModel>> GetByClientId(GetOrdersByClientIdModel model);
 
+    Task<List<OrderFullModel>> GetByPeriod(GetOrdersInPeriodModel model);
+
     Task<List<OrderModel>> GetAll(GetAllOrdersModel model);
 }

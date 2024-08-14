@@ -122,6 +122,20 @@ public class ServiceMappingProfile : Profile
             .ForMember(d => d.Containers, map => map.MapFrom(c => c.Containers))
             .ForMember(d => d.DownTimes, map => map.MapFrom(c => c.DownTimes));
 
+        
+        CreateMap<Order, OrderFullModel>()
+            .ForMember(d => d.Id, map => map.MapFrom(c => c.Id))
+            .ForMember(d => d.ClientId, map => map.MapFrom(c => c.ClientId))
+            .ForMember(d => d.DateStart, map => map.MapFrom(c => c.DateStart))
+            .ForMember(d => d.DateEnd, map => map.MapFrom(c => c.DateEnd))
+            .ForMember(d => d.HubStartId, map => map.MapFrom(c => c.HubStartId))
+            .ForMember(d => d.HubEndId, map => map.MapFrom(c => c.HubEndId))
+            .ForMember(d => d.Price, map => map.MapFrom(c => c.Price))
+            .ForMember(d => d.Costs, map => map.MapFrom(c => c.Costs))
+            .ForMember(d => d.Containers, map => map.MapFrom(c => c.Containers))
+            .ForMember(d => d.DownTimes, map => map.MapFrom(c => c.DownTimes))
+            .ForMember(d => d.IsDeleted, map => map.MapFrom(c => c.IsDeleted));
+        
 
         CreateMap<Container, ContainerModel>()
             .ForMember(d => d.Id, map => map.MapFrom(c => c.Id));
