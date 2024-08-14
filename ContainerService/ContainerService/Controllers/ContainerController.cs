@@ -22,8 +22,9 @@ public class ContainerController(
         CreateContainerRequest request)
     {
         var id = await containerService.Add(mapper.Map<CreateContainerModel>(request));
-        var response = new CommonResponse<CreateContainerResponse> 
-            { Data = new CreateContainerResponse { Id = id } };
+        var response = new CreatedResult(
+            nameof(Create), new CommonResponse<CreateContainerResponse>
+                { Data = new CreateContainerResponse { Id = id } });
 
         return response;
     }
@@ -66,7 +67,7 @@ public class ContainerController(
     
     [HttpGet("iso-numbers/{isoNumber}")]
     public async Task<ActionResult<CommonResponse<GetContainerByIsoResponse>>> GetByIso(
-        GetContainerByIsoRequest request)
+        [FromRoute] GetContainerByIsoRequest request)
     {
         var container = await containerService.GetByIso(mapper.Map<GetContainerByIsoModel>(request));
         var response = new CommonResponse<GetContainerByIsoResponse>

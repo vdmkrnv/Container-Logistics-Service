@@ -5,6 +5,7 @@ using Infrastructure.Repositories.Implementations;
 using Infrastructure.Settings;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using OpenTelemetry.Metrics;
 using Persistence.EntityFramework;
 using Services.Mapper;
 using Services.Models.Request.Container;
@@ -13,6 +14,7 @@ using Services.Repositories.Interfaces;
 using Services.Services.Implementations;
 using Services.Services.Interfaces;
 using Services.Validation.Container;
+using Services.Validation.Container.Validators;
 using Services.Validation.Type;
 using WebApi.Mapper;
 using ExceptionHandlerMiddleware = WebApi.Middlewares.ExceptionHandlerMiddleware;
@@ -48,6 +50,8 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IValidator<GetContainerByIsoModel>, GetContainerByIsoValidator>();
         services.AddScoped<IValidator<GetContainersByTypeIdModel>, GetContainersByTypeIdValidator>();
         services.AddScoped<IValidator<UpdateContainerModel>, UpdateContainerValidator>();
+
+        services.AddScoped<ContainerValidator>();
         
         // Type
         services.AddScoped<IValidator<CreateTypeModel>, CreateTypeValidator>();
@@ -55,6 +59,8 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IValidator<GetAllTypesModel>, GetAllTypesValidator>();
         services.AddScoped<IValidator<GetTypeByIdModel>, GetTypeByIdValidator>();
         services.AddScoped<IValidator<UpdateTypeModel>, UpdateTypeValidator>();
+
+        services.AddScoped<TypeValidator>();
         
 
         return services;
@@ -153,6 +159,26 @@ public static class ServiceCollectionExtensions
             });
 
         });
+        
+        return services;
+    }
+    
+    public static IServiceCollection AddTelemetry(this IServiceCollection services)
+    {
+        services.AddOpenTelemetry()
+            .WithMetrics(builder =>
+            {
+                builder.AddPrometheusExporter();
+
+                builder.AddMeter("Microsoft.AspNetCore.Hosting",
+                    "Microsoft.AspNetCore.Server.Kestrel");
+                builder.AddView("http.server.request.duration",
+                    new ExplicitBucketHistogramConfiguration
+                    {
+                        Boundaries = [ 0, 0.005, 0.01, 0.025, 0.05,
+                            0.075, 0.1, 0.25, 0.5, 0.75, 1, 2.5, 5, 7.5, 10 ]
+                    });
+            });
         
         return services;
     }

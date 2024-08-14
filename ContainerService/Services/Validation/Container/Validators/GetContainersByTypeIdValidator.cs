@@ -1,7 +1,7 @@
 using FluentValidation;
 using Services.Models.Request.Container;
 
-namespace Services.Validation.Container;
+namespace Services.Validation.Container.Validators;
 
 public class GetContainersByTypeIdValidator : AbstractValidator<GetContainersByTypeIdModel>
 {

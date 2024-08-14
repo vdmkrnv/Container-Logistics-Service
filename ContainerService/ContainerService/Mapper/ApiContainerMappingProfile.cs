@@ -1,9 +1,7 @@
 using AutoMapper;
 using Services.Models.Request.Container;
-using Services.Models.Request.Type;
 using Services.Models.Response.Container;
 using WebApi.Models.Request.Container;
-using WebApi.Models.Request.Type;
 using WebApi.Models.Response;
 using WebApi.Models.Response.Container;
 
